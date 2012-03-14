@@ -51,7 +51,7 @@ M:1      \ RFProtocol
 
 
 === Building ===
-These instructions are tested on Ubuntu 11.04
+These instructions are tested on Ubuntu 11.04.
 
 Dependencies:
 On Ubuntu 11.04, a RouteFlow setup requires the following packages to be installed:
@@ -76,7 +76,7 @@ You can also compile them individually:
 
 $ make slave
 $ make server
-$ make controller
+$ make nox
 
 After the build, you can run tests 1 and 2. The setup to run them is described in the section "Running".
 
@@ -135,5 +135,7 @@ No instructions yet.
 - Resiliency & Scalability:
     - Physically distribute the virtualization environment via mutliple OVS providing the connectivity of the virtual control network
     - Improve resiliency: Have a "stand-by" environment to take over in case of failure of the master RF-Server / Virtualized Control Plane 
-    
+
+- Rename "nox" target to "controller" in Makefile.
+
 - For smaller changes, see TODO markings in the files.

@@ -13,7 +13,7 @@ export libdirs := ipc utils rftable
 export srcdirs := rf-server rf-slave
 
 export CPP := g++
-export CFLAGS := -Wall  -W
+export CFLAGS := -Wall -W
 export AR := ar
 
 all: build lib app nox
@@ -61,14 +61,16 @@ slave: lib
 	
 nox: lib
 	echo "Building NOX and RF-Controller..."
-	if test -d $(RFC_DIR)/build; \
-	then echo "Skipping configure..."; \
-	else cd $(RFC_DIR); ./boot.sh; mkdir build; cd build; export CPP=; ../configure;\
-	fi
-	make -C $(RFC_DIR)/build
-	echo "finished."
+	cd $(RFC_DIR); \
+	./boot.sh; \
+	mkdir build; \
+	cd build; \
+	export CPP=; \
+	../configure --enable-ndebug; \
+	make -C $(RFC_DIR)/build; \
+	echo "done."
 
-clean: clean-libs clean-apps_obj clean-apps_bin
+clean: clean-libs clean-apps_obj clean-apps_bin clean-nox
 
 clean-nox:
 	@rm -rf $(RFC_DIR)/build
