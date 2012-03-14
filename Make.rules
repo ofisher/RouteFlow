@@ -12,10 +12,10 @@ LIBS := $(addprefix $(BUILD_LIB_DIR)/$(LIBPREFIX),$(libdirs))
 LIBS := $(addsuffix .$(LIBSUFFIX),$(LIBS))
 
 
-LNX_LIBS := -lrt -lnetlink -lutil -lpthread
+LNX_LIBS := -lrt -lnetlink -lutil -lpthread -lmongoclient -lboost_thread -lboost_system -lboost_filesystem -lboost_program_options
 
-CPPFLAGS += $(addprefix -I$(LIB_DIR)/,$(libdirs))
-CPPFLAGS += -I$(INC_DIR)
+CPPFLAGS += $(addprefix -I$(IPC_DIR)/,$(libdirs))
+CPPFLAGS += -I$(MONGO_DIR)
 
 ifneq (,$(DEBUG))
 CFLAGS += -g -D_GLIBCXX_DEBUG=1
@@ -42,7 +42,7 @@ all: $(targetlib) $(apps_bin)
 # BUILD OBJS
 
 $(BUILD_OBJ_DIR)/$(notdir $(CURDIR))/%.o: %.$(SOURCE_SUFIX)
-	$(CPP) $(CFLAGS) $(CPPFLAGS)  -c $< -o $@
+	$(CPP) $(CFLAGS) $(CPPFLAGS) -c  $< -o $@
 
 ################################################################################
 # BUILD LIBS

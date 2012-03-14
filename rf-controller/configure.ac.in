@@ -11,6 +11,9 @@ AH_BOTTOM([/* NOX version with build number, e.g. "1.2.3+build456". */
 
 AM_INIT_AUTOMAKE([tar-ustar])
 
+AM_SILENT_RULES([yes])
+
+
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
@@ -29,6 +32,12 @@ AC_CONFIG_SRCDIR([src/])
 AC_CONFIG_HEADER([config.h])
 
 AX_BOOST_BASE([1.34.1])
+
+AX_BOOST_SYSTEM
+if test "$ax_cv_boost_system" != "yes"; then
+   AC_MSG_ERROR([cannot find the Boost::System library])
+fi
+
 
 AX_BOOST_FILESYSTEM
 if test "$ax_cv_boost_filesystem" != "yes"; then
@@ -58,34 +67,23 @@ AC_PROG_DOXYGEN
 dnl Add your module here to have it grouped into a package
 
 ACI_PACKAGE([coreapps],[core application set],
-               [testharness coretests pyrt simple_c_app simple_c_py_app
-               	hub switch examples messenger snmp
+               [pyrt 
+               	hub switch messenger 
                	#add coreapps component here
 		],
                [yes])
 ACI_PACKAGE([netapps],[misc network apps],
-               [storage authenticator 
-               	routing user_event_log tests topology discovery 
-               	bindings_storage switchstats flow_fetcher data
-               	switch_management networkstate hoststate tablog 
-               	route lavi routeflowc
-                #add netapps component here
+               	topology discovery 
+               	switchstats 
+                routeflowc jsonstats #add netapps component here
 		],
                [TURN_ON_NETAPPS])
-ACI_PACKAGE([webapps],[misc ui apps],
-               [webserver webservice webserviceclient
-               	miscws
-               	#add webapps component here
-		],
-               [TURN_ON_WEBAPPS])
 
 AC_SUBST(ACTIVE_PACKAGES)
 AC_SUBST(MODULES_coreapps)               
 AC_SUBST(MODULES_netapps)               
-AC_SUBST(MODULES_webapps)               
 
 AM_CONDITIONAL([HAVE_NETAPPS], [test -n "$MODULES_netapps"])
-AM_CONDITIONAL([HAVE_WEBAPPS], [test -n "$MODULES_webapps"])
 
 dnl
 dnl Conditional checks based on what modules have been turned on.

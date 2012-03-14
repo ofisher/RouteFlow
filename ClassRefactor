@@ -1,0 +1,48 @@
+Métodos e atributos que parecem não fazem sentido na classe que estão
+
+RF-SLAVE
+
+flwtable.hh/.cc
+int32_t FlwTablePolling::maskAddr2Int(uint32_t mask) 
+void FlwTablePolling::fakeReq(char *hostAddr, const char *intf)
+
+Devem pertencer à classe RouteEntry? Novos nomes se mudado?
+static int32_t addFlowToHw(const RouteEntry& route);
+static int32_t delFlowFromHw(const RouteEntry& route);
+
+Devem pertencer à classe HostEntry? Novos nomes se mudadas?
+static int32_t addFlowToHw(const HostEntry& host);
+static int32_t delFlowFromHw(const HostEntry& host);
+
+
+RF-SERVER
+
+
+Métodos na classe correta mas dividem o mesmo arquivo com outras classes e devem ser separados
+
+RF-SLAVE
+
+HostEntry, RouteEntry, Thread e FlwTablePolling estão no arquivo flwtable.hh/.cc
+
+
+
+
+Comentários
+
+RF-SLAVE
+
+- Classes do Slave precisam de mais comentários.
+
+
+RF-SERVER
+
+
+Nomes de variáveis, métodos, classes, etc
+
+RF-SLAVE
+
+flwtable.hh/.cc
+- FlwTablePolling não parece fazer mais muito sentido
+- Nome mais intuitivo para o método FakeReq
+
+RF-SERVER

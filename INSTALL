@@ -13,7 +13,7 @@ This version of RouteFlow is an alpha developers' release intended to evaluate R
 
 RouteFlow relies on NOX and OpenFlow as the communication protocol for controlling switches.  
 RouteFlow uses Open vSwitch to provide the connectivitiy within the virtual environment where Linux virtual machines run the Quagga routing engine.
-This build supports Openflow v1.0.0 and NOX v0.6.
+This build supports Openflow v1.0.0 and NOX v0.9.0.
 Please be aware of OpenFlow, NOX, Open vSwitch, Quagga and RouteFlow licenses.
 
 Contents

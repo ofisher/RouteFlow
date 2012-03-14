@@ -1,19 +1,19 @@
 
 export ROOT_DIR=$(CURDIR)
 export BUILD_DIR=$(ROOT_DIR)/build
-export LIB_DIR=$(ROOT_DIR)/common
+export IPC_DIR=$(ROOT_DIR)/common
 export RFC_DIR=$(ROOT_DIR)/rf-controller
-export INC_DIR=$(ROOT_DIR)/include
+export MONGO_DIR=/usr/local/include/mongo
 
 export BUILD_LIB_DIR=$(BUILD_DIR)/lib
 export BUILD_OBJ_DIR=$(BUILD_DIR)/obj
 
 #the lib subdirs should be done first
-export libdirs := rf-protocol sys ipc 
-export srcdirs := rf-server rf-slave 
+export libdirs := ipc utils rftable
+export srcdirs := rf-server rf-slave
 
 export CPP := g++
-export CFLAGS := -O2 -Wall -D_GNU_SOURCE -D_POSIX_SOURCE -W
+export CFLAGS := -Wall  -W
 export AR := ar
 
 all: build lib app nox
@@ -27,7 +27,7 @@ lib: build
 	@for dir in $(libdirs); do \
 		mkdir -p $(BUILD_OBJ_DIR)/$$dir; \
 		echo "Compiling Library $$dir..."; \
-		make -C $(LIB_DIR)/$$dir all; \
+		make -C $(IPC_DIR)/$$dir all; \
 		rmdir $(BUILD_OBJ_DIR)/$$dir; \
 		echo "done."; \
 	done
