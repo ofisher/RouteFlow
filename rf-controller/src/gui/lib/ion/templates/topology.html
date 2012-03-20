@@ -1,0 +1,65 @@
+<div id="topology_div">
+
+	<div class="floatleft">
+		<div id="gmaps_topology_refreshButton" dojoType="ion.Button" label="Refresh"></div>
+	</div>
+	
+	<span id="map_title" style="line-height: 3em;">Topology Map</span>
+	
+	<div id="map_div"></div>
+
+	<div id="gv_legend_container">
+		<table id="gv_legend" class="legend-table">
+                    <tr>
+                        <td>
+                            <div id="legend-title">
+                                <span style="color:#000000;">Link:</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="divColorUp" class="legend">&nbsp;</div>
+                        </td>
+                        <td>
+                            <span class="legend-text">Control Plane</span>    
+                        </td>
+                        <td>
+                            <div id="divColorDown" class="legend">&nbsp;</div>
+                        </td>
+                        <td>
+                            <span class="legend-text">Forwarding Plane</span>
+                        </td>
+                    </tr>
+              </table>
+	</div>
+
+        <div id="icon_legend_container">
+        <table id="table-icons" class="legend-table">
+            <tr>
+                <td>
+                    <span>Nodes:</span>
+                </td>
+                <td>
+                    <img src="images/icons/host.png" />
+                    <span>Host</span>
+                </td>
+                <td>
+                    <img src="images/icons/of-switch.png" />
+                    <span>OpenFlow-Switch</span>
+                </td>
+                <td>
+                    <img src="images/icons/controller.png" />
+                    <span>RouteFlow-Controller</span>
+                </td>
+                <td>
+                    <img src="images/icons/rf-server.png" />
+                    <span>RouteFlow-Server</span>
+                </td>
+            </tr>
+        </table>
+        </div>
+		
+	<div id="gmaps_topology_loadingDialog" dojoType="ion.ModalBox">
+		<span class="circuitListRetrieveMsg">Loading topology map...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+</div>

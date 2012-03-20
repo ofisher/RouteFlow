@@ -39,6 +39,7 @@
 
 #include "pyglue.hh"
 
+#include "flow-stats-in.hh"
 #include "event.hh"
 #include "assert.hh"
 

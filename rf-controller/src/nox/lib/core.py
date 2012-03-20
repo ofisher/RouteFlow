@@ -529,6 +529,14 @@ class Component:
         self.register_handler(Desc_stats_in_event.static_get_name(),
                               gen_ds_in_cb(handler))
 
+    ###############################################################################
+    # Minha funcao para fazer o registro do flow_stats_in
+    # (Diogo)
+    ###############################################################################
+    def register_for_flow_stats_in(self, handler):
+        self.register_handler(Flow_stats_in_event.static_get_name(),
+                              gen_fs_in_cb(handler))
+
     def register_for_datapath_leave(self, handler):
         """
         register a handler to be called on a every datapath_leave

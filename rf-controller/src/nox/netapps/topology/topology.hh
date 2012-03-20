@@ -139,6 +139,8 @@ private:
     /** \brief Remove internal port
      */
     void remove_internal(const datapathid&, uint16_t);
+
+    void printNetworkLinkMap(const Link_event&);
 };
 
 } // namespace applications

@@ -1,0 +1,282 @@
+{ "nodes": [
+	{
+		"id": "host1",
+		"name": "host1",
+		"adjacencies": [
+			{
+				"nodeTo": "5",
+				"nodeFrom": "host1",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"timer": 1319141403,
+			"$type": "host",
+			"$dim": 20,
+			"$x": -375,
+			"$y": -30,
+			"latitude": -23.60,
+			"longitude": -46.88
+		}
+	},
+	{
+		"id": "host2",
+		"name": "host2",
+		"adjacencies": [
+			{
+				"nodeTo": "6",
+				"nodeFrom": "host2",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"timer": 1319141403,
+			"$type": "host",
+			"$dim": 20,
+			"$x": 425,
+			"$y": -75,
+			"latitude": -23.25,
+			"longitude": -46.06
+		}
+	},
+	{
+		"id": "host3",
+		"name": "host3",
+		"adjacencies": [
+			{
+				"nodeTo": "7",
+				"nodeFrom": "host3",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"timer": 1319141403,
+			"$type": "host",
+			"$dim": 20,
+			"$x": -475,
+			"$y": 250,
+			"latitude": -23.01,
+			"longitude": -45.26
+		}
+	},
+	{
+		"id": "host4",
+		"name": "host4",
+		"adjacencies": [
+			{
+				"nodeTo": "8",
+				"nodeFrom": "host4",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"timer": 1319141403,
+			"$type": "host",
+			"$dim": 20,
+			"$x": 300,
+			"$y": 200,
+			"latitude": -20.00,
+			"longitude": -48.20
+		}
+	},
+	{
+		"id": "rf-server",
+		"name": "RouteFlow Server",
+		"adjacencies": [
+			{
+				"nodeTo": "controller",
+				"nodeFrom": "rf-server",
+				"data": {
+					"$color": "#145D80"
+				}
+			}
+		],
+		"data": {
+			"$type": "rf-server",
+			"$dim": 20,
+			"$x": -50,
+			"$y": -170,
+			"latitude": -20.950884,
+			"longitude": -42.775578
+		}
+	},
+	{
+		"id": "5",
+		"name": "switch5",
+		"adjacencies": [
+			{
+				"nodeTo": "6",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "7",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"$dim": 20,
+			"$x": -225,
+			"$y": -50,
+			"latitude": -23.538609,
+			"longitude": -46.682607
+		}
+	},
+	{
+		"id": "6",
+		"name": "switch6",
+		"adjacencies": [
+			{
+				"nodeTo": "5",
+				"nodeFrom": "6",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "6",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"$dim": 20,
+			"$x": 275,
+			"$y": -50,
+			"latitude": -23.202466,
+			"longitude": -45.862749
+		}
+	},
+	{
+		"id": "7",
+		"name": "switch7",
+		"adjacencies": [
+			{
+				"nodeTo": "5",
+				"nodeFrom": "7",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "7",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"$dim": 20,
+			"$x": -325,
+			"$y": 225,
+			"latitude": -23.002466,
+			"longitude": -45.062749
+		}
+	},
+	{
+		"id": "8",
+		"name": "switch8",
+		"adjacencies": [
+			{
+				"nodeTo": "5",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "6",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "7",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"$dim": 20,
+			"$x": 175,
+			"$y": 225,
+			"latitude": -20.00,
+			"longitude": -48.00
+		}
+	},
+	{
+		"id": "controller",
+		"name": "Controller",
+		"adjacencies": [
+			{
+				"nodeTo": "5",
+				"nodeFrom": "controller",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "6",
+				"nodeFrom": "controller",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "7",
+				"nodeFrom": "controller",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "controller",
+				"data": {
+					"$color": "#145D80"
+				}
+			}
+		],
+		"Label": {
+			"$color": "#"
+		},
+		"data": {
+			"$type": "controller",
+			"$dim": 25,
+			"$x": 100,
+			"$y": -170,
+			"latitude": -21.002466,
+			"longitude": -45.062749
+		}
+	}
+]}

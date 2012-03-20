@@ -1,0 +1,55 @@
+/******* user list table *******/
+/* Table head */
+.userListTableHead {
+	background:#000000 url(../images/blue-bg.png) repeat-x center;
+}
+
+#content .userListTableHead tr th a {
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+/* Table body */
+tr.userListOddRow, tr.oddrow {
+	background-color:#EEEEEE;
+}
+
+.userListDiv {
+	clear:both;
+}
+
+/* Page navigation */
+.userListPageNav_prev, .userListPageNav_next {
+	background:#000000 url(../images/top-nav-divider-cen.png) repeat-y center; 
+	border-bottom:2px solid #858585;
+	border-left:2px solid #ffffff;
+	border-right:2px solid #989898;
+	border-top:2px solid #FFFFFF;
+	color:#FFFFFF; 
+	float:left;
+	height:25px; 
+	margin: 0 10px 0 10px;
+	padding: 0 0px 0 5px;
+	text-align:center; 
+        vertical-align:middle;
+	width: 65px;
+	-moz-user-select: none;
+}
+
+div.userListPageNav div a,#content #contentDiv div .userListPageNav div a {
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+.userListPageNav_prev img, .userListPageNav_next img {
+	margin-left: 10px;
+	margin-top: 2px;
+}
+
+.userInfoInstructions{
+	display: block;
+	margin:5px 5px 5px 5px;
+}
+.userInfoTable{
+	display: block;
+}

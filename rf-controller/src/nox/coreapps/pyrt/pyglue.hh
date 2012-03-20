@@ -241,6 +241,10 @@ to_python(const Flow_stats&);
 
 template <>
 PyObject*
+to_python(const ofp_action_header&);
+
+template <>
+PyObject*
 to_python(const ofp_match& m);
 
 template <>
@@ -250,6 +254,10 @@ to_python(const std::vector<Port>& p);
 template <>
 PyObject*
 to_python(const std::vector<Table_stats>& p);
+
+template <>
+PyObject*
+to_python(const std::vector<Flow_stats>& p);
 
 template <>
 PyObject*
