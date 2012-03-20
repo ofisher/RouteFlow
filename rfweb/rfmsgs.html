@@ -1,0 +1,210 @@
+<html>
+
+<head>
+<link href="rfstyle.css" rel="stylesheet" type="text/css">
+<script src="jquery-1.7.1.min.js"></script>
+<script src="utils.js"></script>
+<script type="text/javascript">
+SLAVE_SERVER = 0
+SERVER_CONTROLLER = 1
+
+types = {
+    0: {
+        "name": "VMRegisterRequest",
+        "show": true,
+        "channel": SLAVE_SERVER,
+    },
+    
+    1: {
+        "name": "VMRegisterResponse",
+        "show": true,
+        "channel": SLAVE_SERVER,
+    },
+    
+    2: {
+        "name": "VMConfig",
+        "show": true,
+        "channel": SLAVE_SERVER,
+    },
+    
+    3: {
+        "name": "DatapathConfig",
+        "show": false,
+        "channel": SERVER_CONTROLLER,
+    },
+    
+    4: {
+        "name": "RouteInfo",
+        "show": false,
+        "channel": SLAVE_SERVER,
+    },
+    
+    5: {
+        "name": "FlowMod",
+        "show": false,
+        "channel": SERVER_CONTROLLER,
+    },
+    
+    6: {
+        "name": "DatapathJoin",
+        "show": true,
+        "channel": SERVER_CONTROLLER,
+    },
+    
+    7: {
+        "name": "DatapathLeave",
+        "show": true,
+        "channel": SERVER_CONTROLLER,
+    },
+    
+    8: {
+        "name": "VMMap",
+        "show": false,
+        "channel": SERVER_CONTROLLER,
+    },
+}
+
+rowtemplate = "<tr class=\"row bg\{style}\">"
+rowtemplate += "<td id=\"msg_{id}_expand\" class=\"expand_control\" onclick=\"toggle('msg_{id}')\">+</td>";
+rowtemplate += "<td>{to}</td>"
+rowtemplate += "<td>{status}</td>"
+rowtemplate += "<td>{type}</td>"
+rowtemplate += "<tr id=\"msg_{id}_content\" class=\"hidden_msg_content\">"
+rowtemplate += "<td></td>"
+rowtemplate += "<td class=\"message_content\" colspan=\"3\">"
+rowtemplate += "{content}"
+rowtemplate += "</td>"
+rowtemplate += "</tr>"
+rowtemplate += "</tr>"
+
+cbtemplate = "<input type=\"checkbox\" name=\"types\" {checked} value=\"{value}\">{name}<br />"
+
+function process_message(i, msgprefix, msg) {
+    msg["id"] = msgprefix + i;
+    msg["type"] = types[msg["type"]].name;
+    
+    if (msg["read"])
+        msg["status"] = "read"
+    else
+        msg["status"] = "unread"
+        
+    var content = "";
+    for (var attr in msg["content"])
+        content += attr + ": " + msg["content"][attr] + "<br />";
+    msg["content"] = content;
+    msg["style"] = i % 2;
+}
+
+function update_table(table, msgprefix) {
+    var msgtypes = $('input[name=types]:checked').map(function() {
+        return this.value;
+    }).get();
+    
+    var request = table.replace("_", "<->");
+    request += "?types=" + msgtypes;
+    
+    var table = $("#" + table);
+    table.html("");
+    
+    $.ajax({
+        url: "messages/" + request,
+        dataType: 'json',
+        success: function (data) {
+            for (var i in data) {
+                process_message(i, msgprefix, data[i]);
+                table.html(table.html() + apply_template(rowtemplate, data[i]));
+            }
+        }
+    });
+}
+
+function update() {
+    update_table("slave_server", "ss");
+    update_table("server_controller", "sc");
+}
+
+function toggle(id) {
+    var el = document.getElementById(id + "_content");
+    var ex = document.getElementById(id + "_expand");
+    if (el.getAttribute("class") == "hidden_msg_content") {
+        el.setAttribute("class", "msg_content");
+        ex.innerHTML = "-";
+    }
+    else {
+        el.setAttribute("class", "hidden_msg_content");
+        ex.innerHTML = "+";
+    }
+}
+
+function start() {
+    var ss_type_filters = $("#ss_type_filters");
+    var sc_type_filters = $("#sc_type_filters");
+    var filters;
+    for (type in types) {
+        if (types[type].channel == SLAVE_SERVER)
+            filters = ss_type_filters;
+        else if (types[type].channel == SERVER_CONTROLLER)
+            filters = sc_type_filters;
+        else
+            continue;
+        
+        var checked = "";
+        if (types[type].show)
+            checked = "checked=\"checked\"";
+        
+        filters.html(filters.html() + apply_template(cbtemplate, {"value": type, "name": types[type].name, "checked": checked}));
+    }
+    
+    $('input[name=types]').click(function() { update(); });
+}
+</script>
+</head>
+
+<body onload="start(); update();">
+<div class="first section" id="control">
+    <div class="section_title">Filters</div>
+    <div class="subsection">
+        By message type:
+        <div class="subsection_title">Slave &harr; Server</div>
+        <div id="sc_type_filters"></div>
+        <div class="subsection_title">Server &harr; Controller</div>
+        <div id="ss_type_filters"></div>
+    </div>
+</div>
+
+<div class="section" id="slave_server_channel">
+    <div class="section_title">Slave &harr; Server</div>
+    <table>
+        <thead>
+            <tr class="header">
+                <td class="expand_control_header"></td>
+                <td>To</td>
+                <td>Status</td>
+                <td>Type</td>
+            </tr>
+        </thead>
+        
+        <tbody id="slave_server">
+        </tbody>
+    </table>
+</div>
+
+<div class="section" id="server_controller_channel">
+    <div class="section_title">Server &harr; Controller</div>
+    <table>
+        <thead>
+            <tr class="header">
+                <td class="expand_control_header"></td>
+                <td>To</td>
+                <td>Status</td>
+                <td>Type</td>
+            </tr>
+        </thead>
+        
+        <tbody id="server_controller">
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>
