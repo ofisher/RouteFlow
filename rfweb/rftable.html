@@ -1,9 +1,3 @@
-<html>
-
-<head>
-<link href="rfstyle.css" rel="stylesheet" type="text/css">
-<script src="jquery-1.7.1.min.js"></script>
-<script src="utils.js"></script>
 <script type="text/javascript">
 rowtemplate = "<tr class=\"bg\{style}\">"
 rowtemplate += "<td>{vm_id}</td>"
@@ -37,9 +31,8 @@ function update() {
     });
 }
 </script>
-</head>
 
-<body onload="update();">
+<div>
 <div class="first section">
 <div class="section_title">RFTable</div>
 <table id="rftable">
@@ -53,9 +46,8 @@ function update() {
             <td>DP port</td>
         </tr>
     </thead>
-    
 </table>
 <div> 
-</body>
-
+</div>
+<script> update(); </script>
 </html>

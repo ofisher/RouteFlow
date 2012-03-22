@@ -63,7 +63,7 @@ if (args[0] == "features"):
     cmd["command"] = "features_request"
 elif (args[0] == "ports"):
     cmd["type"] = "jsonstats"
-    cmd["command"] = "stats_request"
+    cmd["command"] = "port_stats_request"
 else:
     print "Unknown command: "+args[0]
     sys.exit(2)
@@ -73,11 +73,10 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((nox_host,port_no))
 
 sock.send(simplejson.dumps(cmd))
-reply = simplejson.dumps(simplejson.loads(sock.recv(4096)), indent=4)
+reply = simplejson.dumps(simplejson.loads(sock.recv(32768)), indent=4)
 
 sock.send("{\"type\":\"disconnect\"}")
 sock.shutdown(1)
 sock.close()
 
 print reply
-print "STATS_CLIENT: bytes received: " + str(len(reply))

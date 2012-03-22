@@ -447,8 +447,8 @@ Topology::printNetworkLinkMap(const Link_event& le) {
 	for(it=latitudeList.begin(); it!=latitudeList.end(); ++it) {
 		std::cout << "datapath: " << it->first.string() << "; latitude :" << it->second << "\n";
 	}
-
-	ofstream file ("../../src/gui/lib/routeflow/json.js");
+    
+	ofstream file("../../../rfweb/data/topology.json");
 	if (file.is_open())
 	{
 		file << "{ \"nodes\": [\n";

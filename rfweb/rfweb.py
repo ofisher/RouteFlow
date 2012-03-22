@@ -16,6 +16,9 @@ HTML = 1
 JSON = 2
 CSS = 3
 JS = 4
+GIF = 5
+PNG = 6
+JPEG = 7
 
 CONTENT_TYPES = {
 PLAIN: "text/plain",
@@ -23,12 +26,20 @@ HTML: "text/html",
 JSON: "application/json",
 CSS: "text/css",
 JS: "text/javascript",
+GIF: "image/gif",
+PNG: "image/png",
+JPEG: "image/jpeg",
 }
 
 exts = {
 ".js": JS,
 ".html": HTML,
 ".css": CSS,
+".png": PNG,
+".gif": GIF,
+".jpg": JPEG,
+".jpeg": JPEG,
+".json": JSON,
 }
 
 conn = pymongo.Connection("localhost", 27017)
@@ -107,7 +118,7 @@ def application(env, start_response):
     elif (path == "messages"):
         status, rbody, ctype = messages(env)
     else:
-        path = os.path.join(os.getcwd(), path)
+        path = os.path.join(os.getcwd(), path + env["PATH_INFO"])
         if os.path.exists(path) and os.path.isfile(path):
             f = open(path, "r");
             status = 200

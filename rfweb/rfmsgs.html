@@ -1,9 +1,3 @@
-<html>
-
-<head>
-<link href="rfstyle.css" rel="stylesheet" type="text/css">
-<script src="jquery-1.7.1.min.js"></script>
-<script src="utils.js"></script>
 <script type="text/javascript">
 SLAVE_SERVER = 0
 SERVER_CONTROLLER = 1
@@ -158,9 +152,8 @@ function start() {
     $('input[name=types]').click(function() { update(); });
 }
 </script>
-</head>
 
-<body onload="start(); update();">
+<div>
 <div class="first section" id="control">
     <div class="section_title">Filters</div>
     <div class="subsection">
@@ -205,6 +198,5 @@ function start() {
         </tbody>
     </table>
 </div>
-</body>
-
-</html>
+</div>
+<script> start(); update(); </script>

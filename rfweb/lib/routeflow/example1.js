@@ -21,7 +21,7 @@ var lastClickedNode;
 // Log is an Objecto Literal. The first element of the Log object defines a property, false; the second element, the write property, invokes a function (function("text"));
 var Log = {
 	elem: false,
-	write: function(text){
+	write: function(text) {
 		if (!this.elem) 
 			this.elem = document.getElementById('log');
 		this.elem.innerHTML = text;
@@ -29,15 +29,15 @@ var Log = {
 	}
 };
 
-function graph_init(){
-    var jqxhr = $.getJSON("lib/routeflow/json.js",
-        function(json){
+function graph_init() {
+    var jqxhr = $.getJSON("data/topology.json",
+        function(json) {
             var jsonTopology = json["nodes"];
             routeFlowDemo(jsonTopology);
     });
 }
 
-function routeFlowDemo(jsonTopology){
+function routeFlowDemo(jsonTopology) {
         var rfDemo;
 
         	// init routeFlowDemo
@@ -125,14 +125,14 @@ function routeFlowDemo(jsonTopology){
 		levelDistance: 130,
 		// Add text to the labels.
 		// This method is only triggered on label creation and only for DOM labels (not native canvas ones).
-		onCreateLabel: function(domElement, node){
+		onCreateLabel: function(domElement, node) {
 			domElement.innerHTML = node.name;
 			var style = domElement.style;
 			style.fontSize = "0.8em";
 			style.color = "#ddd";
 		},
 		// Change node styles when DOM labels are placed or moved.
-		onPlaceLabel: function(domElement, node){
+		onPlaceLabel: function(domElement, node) {
 			var style = domElement.style;
 			var left = parseInt(style.left);
 			var top = parseInt(style.top);
@@ -165,7 +165,7 @@ function routeFlowDemo(jsonTopology){
 
 
 
-        function dataTime(jsonTopology){
+        function dataTime(jsonTopology) {
             var node = jsonTopology[0];
             var nodeData = node["data"];
             var timer = nodeData["timer"];
@@ -176,26 +176,23 @@ function routeFlowDemo(jsonTopology){
 
 	// periodically json update function
 	function topologyTimer() {
-
-		var jqxhr = $.getJSON("lib/routeflow/json.js",
-	        function(json){
+		var jqxhr = $.getJSON("data/topology.json",
+	        function(json) {
 			var data = json["nodes"];
 			var newTimer = dataTime(data);
-                        if(document.getElementById("selectedTab").value == "graph"){
-			    if(newTimer != originalTimer){
-				    originalTimer = newTimer;
-				    rfDemo.updateJSON(data);
-				    var startTime = new Date().getTime(); while(new Date().getTime() < startTime + 1000);
-				    rfDemo.updateJSON(data);
-			    }
-                        }
+		    if(newTimer != originalTimer) {
+			    originalTimer = newTimer;
+			    rfDemo.updateJSON(data);
+			    var startTime = new Date().getTime(); while(new Date().getTime() < startTime + 1000);
+			    rfDemo.updateJSON(data);
+		    }
 		});
 		setTimeout(statsTimer, 500);
 	}
 	
 	function statsTimer() {
-		var jqxhr = $.getJSON("lib/routeflow/jsonStats.js",
-	                function(json){
+		var jqxhr = $.getJSON("data/switchstats.json",
+	                function(json) {
 				//alert("stats updated");
 				var data = json["nodes"];
 				rfDemo.loadStats(data);                       	

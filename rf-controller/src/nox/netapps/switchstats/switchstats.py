@@ -492,7 +492,7 @@ class switchstats(Component):
     def print_stats(self):
 	pass
 	#if dpid == 5: 
-	f = open("../../src/gui/lib/routeflow/jsonStats.js", "w")
+	f = open("../../../rfweb/data/switchstats.json", "w")
 	f.write('{ "nodes": [\n')
 	for i in range(len(dp_list)):
 		f.write('\t{\n')

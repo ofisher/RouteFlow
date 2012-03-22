@@ -666,6 +666,7 @@
 		$jit.Trans = {
 
 
+
 			$extend: true,
 
 			linear: function(p) {
@@ -8303,7 +8304,7 @@
 	/*
         * variaveis para plot e animacao da flow table
         */
-        var tableMatches;
+    var tableMatches;
 	var contMatch = new Array();
 	var contActions = new Array();
 	var flowsActions = new Array();
@@ -8564,7 +8565,7 @@
 				
 				//ofp_desc_stats
 				var switchData = node.getData('ofp_desc_stats');
-				if(switchData) {	
+				if(switchData) {
 					html = html + "<b>ofp_desc_stats:</b><ul><li>", list = [];
 					list.push("mfr_desc = " + switchData[0]);
 					list.push("hw_desc = " + switchData[1]);
@@ -8605,7 +8606,7 @@
 				// Build the bottom flow table
 				var flows = node.getData('flows');				
 				html = "<div id='bottom-table'>" +
-                                "<table align=\"center\" border=\"1\">" +
+                    "<table align=\"center\" border=\"1\">" +
 				    "<tr class='table-row-header'>" +
 					    "<td style='width: 38px;'>Flow#</td>" +
 					    "<td style='width: 250px;'>Matches</td>" +
