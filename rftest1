@@ -32,13 +32,14 @@ if [ "$1" != "clear" ]; then
     mongod --quiet --dbpath $HOME/db --logpath /dev/null &
     sleep 5
 
-    echo "Starting the rfvm1 virtual router..."
+    echo "Starting the rfvm1 virtual machine..."
     mkdir /var/lib/lxc/rfvm1/rootfs/opt/rf-slave &>> $LOG_FILE
     cp build/rf-slave /var/lib/lxc/rfvm1/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
-    cp test.in /var/lib/lxc/rfvm1/rootfs/opt/rf-slave &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvm1/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvm1/rootfs/usr/lib &>> $LOG_FILE
     
     echo "#!/bin/sh" > /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
-    echo "sleep 15" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
+    echo "sleep 5" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
     echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
     chmod +x /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
     
@@ -51,12 +52,14 @@ if [ "$1" != "clear" ]; then
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
-    echo "Starting NOX + the RouteFlow network controller..."
-    ( cd rf-controller/build/src && ./nox_core -v -i ptcp:6633 routeflowc &>> $LOG_FILE & ) 
-    sleep 3
+    echo "Starting NOX and the RouteFlow network controller..."
+    ( cd rf-controller/build/src && ./nox_core -i ptcp:6633 routeflowc --verbose="routeflowc:ANY:INFO" &>> $LOG_FILE & )
+    sleep 5
+    
     echo "Starting the RouteFlow server..."
     build/rf-server &>> $LOG_FILE &
-
+    sleep 3
+    
     echo "Starting the control plane network (dp0 OVS)..."
     ovs-openflowd --hw-desc=rfovs dp0 tcp:127.0.0.1:6633 --out-of-band --detach --ports=rfvm1.1,rfvm1.2  &>> $LOG_FILE
     sleep 3
@@ -67,13 +70,14 @@ if [ "$1" != "clear" ]; then
     ovs-openflowd switch1 tcp:127.0.0.1:6633 --out-of-band --ports=b1.0,b2.0 --detach &>> $LOG_FILE
 
     cd - &> /dev/null
-
-    echo "Done! Thanks for trying RouteFlow!"
-
-    # TODO: ping b2 from b1 and show result in stdout
-    # We need -t in ssh to simulate a tty for ping
-    # ssh -t root@192.169.100.30 ping 192.169.100.1
-    echo "We should be pinging here..."
+    sleep 5
+    
+    echo "Now we'll open this test's log."
+    echo "Try pinging b1 from b2:"
+    echo "  $ sudo lxc-console -n b1"
+    echo "Login and run:"
+    echo "  $ ping 172.31.2.2"
+    tail -f $LOG_FILE
 fi
 
 exit 0

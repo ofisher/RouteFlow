@@ -416,16 +416,16 @@ void
 Topology::printNetworkLinkMap(const Link_event& le) {
         NetworkLinkMap::iterator nlm_iter = topology.find(le.dpsrc);
 
-        std::cout << "######################\n";
-        std::cout << "Enlace adicionado\n";
-        std::cout << "######################\n";
-        std::cout << le.dpsrc.string() << ":" << le.sport <<  " -> "<< le.dpdst.string() << ":" << le.dport << "\n";
+//        std::cout << "######################\n";
+//        std::cout << "Enlace adicionado\n";
+//        std::cout << "######################\n";
+//        std::cout << le.dpsrc.string() << ":" << le.sport <<  " -> "<< le.dpdst.string() << ":" << le.dport << "\n";
 
         nlm_iter = topology.begin();
         LinkSet ls;
-        std::cout << "######################\n";
-        std::cout << "Topologia\n";
-        std::cout << "######################\n";
+//        std::cout << "######################\n";
+//        std::cout << "Topologia\n";
+//        std::cout << "######################\n";
         while(nlm_iter != topology.end()) {
 
                 DatapathLinkMap::iterator dplm_iter = nlm_iter->second.outlinks.begin();
@@ -434,7 +434,7 @@ Topology::printNetworkLinkMap(const Link_event& le) {
                         ls = dplm_iter->second;
                         LinkSet::iterator ls_iter = ls.begin();
                         while(ls_iter != ls.end()) {
-                                std::cout <<  nlm_iter->first.string() << ":" << ls_iter->src << " -> " << dplm_iter->first.string() <<":" << ls_iter->dst <<"\n";
+//                                std::cout <<  nlm_iter->first.string() << ":" << ls_iter->src << " -> " << dplm_iter->first.string() <<":" << ls_iter->dst <<"\n";
                                 ls_iter++;
                         }
                         dplm_iter++;
@@ -444,9 +444,9 @@ Topology::printNetworkLinkMap(const Link_event& le) {
 
 	
 	hash_map<datapathid, int>::iterator it;
-	for(it=latitudeList.begin(); it!=latitudeList.end(); ++it) {
-		std::cout << "datapath: " << it->first.string() << "; latitude :" << it->second << "\n";
-	}
+//	for(it=latitudeList.begin(); it!=latitudeList.end(); ++it) {
+//		std::cout << "datapath: " << it->first.string() << "; latitude :" << it->second << "\n";
+//	}
     
 	ofstream file("../../../rfweb/data/topology.json");
 	if (file.is_open())
@@ -571,7 +571,7 @@ Topology::printNetworkLinkMap(const Link_event& le) {
 		file.close();
 		
 	}
-	else std::cout << "Unable to open file";
+	else std::cout << "Unable to open topology file";
 	
 }
 

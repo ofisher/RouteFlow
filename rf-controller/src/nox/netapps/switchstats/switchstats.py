@@ -130,11 +130,11 @@ class switchstats(Component):
 	self.post_callback(DEFAULT_POLL_FILE_PERIOD, lambda : self.file_timer())
        
     def dp_join(self, dp, stats):
-	lg.warn('############### dp_join ###############\n')
+	#lg.warn('############### dp_join ###############\n')
 	global dp_num
 	if dp in dp_list:
 		dp_list.remove(dp)
-	lg.warn(dp)
+	#lg.warn(dp)
 	dp_list.append(dp)
 	dp_list.sort()
         dpid_obj = datapathid.from_host(dp)
@@ -213,10 +213,10 @@ class switchstats(Component):
         return None        
             
     def table_stats_in_handler(self, dpid, tables):
-	lg.warn('############### table_stats_in_handler ###############\n')
+	#lg.warn('############### table_stats_in_handler ###############\n')
         self.dp_table_stats[dpid] = tables
 	for i in range(len(tables)):
-		print "table[",i,"]"
+		#print "table[",i,"]"
 
 		doc =	{"_id": self.dp_table_stats[dpid][i]['table_id'],
                         "name": self.dp_table_stats[dpid][i]['name'],
@@ -225,17 +225,17 @@ class switchstats(Component):
 
 		mongo_stats[dpid]["table"].save(doc)
 
-		print "*** Estatisticas com o MongoDB ***"
-		for x in mongo_stats[dpid]["table"].find({"_id":self.dp_table_stats[dpid][i]['table_id']}):
-			print "mongo_table[",dpid,"].table_id = ", x["_id"]
-			print "mongo_table[",dpid,"].name = ", x["name"]
-			print "mongo_table[",dpid,"].active_count = ", x["active_count"]
-			print "mongo_table[",dpid,"].lookup_count = ", x["lookup_count"]
-	print "*****"
+#		print "*** Estatisticas com o MongoDB ***"
+#		for x in mongo_stats[dpid]["table"].find({"_id":self.dp_table_stats[dpid][i]['table_id']}):
+#			print "mongo_table[",dpid,"].table_id = ", x["_id"]
+#			print "mongo_table[",dpid,"].name = ", x["name"]
+#			print "mongo_table[",dpid,"].active_count = ", x["active_count"]
+#			print "mongo_table[",dpid,"].lookup_count = ", x["lookup_count"]
+#	print "*****"
 
 
     def desc_stats_in_handler(self, dpid, desc):
-	lg.warn('############### desc_stats_in_handler ###############\n')
+	#lg.warn('############### desc_stats_in_handler ###############\n')
         self.dp_desc_stats[dpid] = desc
         ip = self.ctxt.get_switch_ip(dpid)
         self.dp_desc_stats[dpid]["ip"] = str(create_ipaddr(c_htonl(ip)))
@@ -250,19 +250,19 @@ class switchstats(Component):
 
         mongo_stats[dpid]["desc"].save(doc)
 
-	print "***** mongodb desc *****"
+#	print "***** mongodb desc *****"
 
-	for x in mongo_stats[dpid]["desc"].find():
-                print "mongo_desc[",dpid,"].table_id = ", x["mfr_desc"]
-                print "mongo_desc[",dpid,"].name = ", x["hw_desc"]
-                print "mongo_desc[",dpid,"].active_count = ", x["sw_desc"]
-                print "mongo_desc[",dpid,"].lookup_count = ", x["serial_num"]
-		print "mongo_desc[",dpid,"].lookup_count = ", x["dp_desc"]
-        print "*****"
+#	for x in mongo_stats[dpid]["desc"].find():
+#                print "mongo_desc[",dpid,"].table_id = ", x["mfr_desc"]
+#                print "mongo_desc[",dpid,"].name = ", x["hw_desc"]
+#                print "mongo_desc[",dpid,"].active_count = ", x["sw_desc"]
+#                print "mongo_desc[",dpid,"].lookup_count = ", x["serial_num"]
+#		print "mongo_desc[",dpid,"].lookup_count = ", x["dp_desc"]
+#        print "*****"
 
 
     def aggr_stats_in_handler(self, dpid, aggr):
-	lg.warn('############### aggr_stats_in_handler ###############\n')
+	#lg.warn('############### aggr_stats_in_handler ###############\n')
         self.dp_aggr_stats[dpid] = aggr
 
 	#r.set('dp_aggr_stats:' + str(dpid) + ':packet_count', self.dp_aggr_stats[dpid]['packet_count'])
@@ -278,23 +278,23 @@ class switchstats(Component):
         mongo_stats[dpid]["aggr"].save(doc)
 
 
-	print "***** mongodb Aggr *****"
-        for x in mongo_stats[dpid]["aggr"].find():
-                print "mongo_aggr[",dpid,"].packet_count = ", x["packet_count"]
-                print "mongo_aggr[",dpid,"].byte_count = ", x["byte_count"]
-                print "mongo_aggr[",dpid,"].flow_count = ", x["flow_count"]
-        print "*****"
+#	print "***** mongodb Aggr *****"
+#        for x in mongo_stats[dpid]["aggr"].find():
+#                print "mongo_aggr[",dpid,"].packet_count = ", x["packet_count"]
+#                print "mongo_aggr[",dpid,"].byte_count = ", x["byte_count"]
+#                print "mongo_aggr[",dpid,"].flow_count = ", x["flow_count"]
+#        print "*****"
 
 	#print "dp_aggr_stats[",dpid,"].packet_count = ", r.get('dp_aggr_stats:' + str(dpid) + ':packet_count')
 	#print "dp_aggr_stats[",dpid,"].byte_count = ", r.get('dp_aggr_stats:' + str(dpid) + ':byte_count')
 	#print "dp_aggr_stats[",dpid,"].flow_count = ", r.get('dp_aggr_stats:' + str(dpid) + ':flow_count')
 
     def flow_stats_in_handler(self, dpid, flows):
-        lg.warn('############### flow_stats_in_handler ###############\n')
+        #lg.warn('############### flow_stats_in_handler ###############\n')
 	self.dp_flow_stats[dpid] = flows
 	mongo_stats[dpid]["flow"].drop()
 	for i in range(len(flows)):
-                print "flow[",i,"]"
+        #print "flow[",i,"]"
 
 		#r.hset('dp_flow_stats:' + str(dpid) + ':packet_count', i, self.dp_flow_stats[dpid][i]['packet_count'])
 		#r.hset('dp_flow_stats:' + str(dpid) + ':byte_count', i,  self.dp_flow_stats[dpid][i]['byte_count'])
@@ -371,7 +371,8 @@ class switchstats(Component):
 			elif j['type'] == 10:
                                 j['type'] = "OFPAT_SET_TP_DST"
 			else:
-				print "ACTION TYPE: ",j['type']
+			    pass
+				# print "ACTION TYPE: ",j['type']
 
 			cont = cont + 1
 
@@ -400,13 +401,13 @@ class switchstats(Component):
 		#print "dp_flow_stats[",dpid,"].match = ", r.hget('dp_flow_stats:' + str(dpid) + ':match', i)
 		#print "dp_flow_stats[",dpid,"].actions = ", r.hget('dp_flow_stats:' + str(dpid) + ':actions', i)
 
-		print "MONGO FLOW_STATS"
-		for x in mongo_stats[dpid]["flow"].find({"_id": i}):
-	                print "mongo_flow[",dpid,"].packet_count = ", x["packet_count"]
-        	        print "mongo_flow[",dpid,"].byte_count = ", x["byte_count"]
-                	print "mongo_flow[",dpid,"].match = ", x["match"]
-	                print "mongo_flow[",dpid,"].actions = ", x["actions"]
-        print "*****"
+#		print "MONGO FLOW_STATS"
+#		for x in mongo_stats[dpid]["flow"].find({"_id": i}):
+#	                print "mongo_flow[",dpid,"].packet_count = ", x["packet_count"]
+#        	        print "mongo_flow[",dpid,"].byte_count = ", x["byte_count"]
+#                	print "mongo_flow[",dpid,"].match = ", x["match"]
+#	                print "mongo_flow[",dpid,"].actions = ", x["actions"]
+#        print "*****"
 
 
     """def port_stats_in_handler(self, dpid, ports):
@@ -432,7 +433,7 @@ class switchstats(Component):
    """
 
     def port_status_handler(self, dpid, reason, port):
-	lg.warn('############### port_status_in_handler ###############\n')
+	#lg.warn('############### port_status_in_handler ###############\n')
         intdp = int(dpid)
         if intdp not in self.dp_stats:
             log.err('port status from unknown datapath', system='switchstats')

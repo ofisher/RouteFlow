@@ -637,7 +637,8 @@ to_python(const Flow_stats& fs)
         }
 
         if (bad_length) {
-            VLOG_ERR(lg, "Action with incorrect length in Flow_stats.");
+            // ... just to silence it. We will improve it in the future.
+            //VLOG_ERR(lg, "Action with incorrect length in Flow_stats.");
             Py_XDECREF(action);
         } else {
             /* add the action to the action list */

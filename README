@@ -23,8 +23,7 @@ licenses.
 
 === Overview ===
 RouteFlow is made of three basic applications: rf-slave, rf-server and 
-rf-controller. Additionally, there are two extra modules: rfweb, an web 
-interface for RouteFlow and jsonflowagent, an SNMP agent.
+rf-controller.
 
 - RF-Slave is the module running as a daemon in the Virtual Machine (VM) 
 responsible for detecting changes in the linux ARP and routing tables. 
@@ -46,6 +45,9 @@ There is also a library (rflib) of common functions to all three applications.
 This library is in the folder "common". It defines the IPC, a central table for 
 RouteFlow state data and utilities like custom types for IP and MAC addresses, 
 OpenFlow message creation and type conversion.
+
+Additionally, there are two extra modules: rfweb, an web interface for 
+RouteFlow and jsonflowagent, an SNMP agent.
 
 +--------VM---------+
 | Quagga | RF-Slave |
@@ -119,16 +121,22 @@ NOX will be compiled with the RouteFlow distribution in the steps ahead.
 ** MongoDB **
 1) Install the dependencies:
 $ sudo apt-get install git-core build-essential scons libboost-dev 
-  libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+  libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev 
+  python-pip
 
-2) To compile and install MongoDB:
+2) There's a small conflict with a constant name in NOX and MongoDB. It has
+been fixed, but is not part of version 2.0.4 yet. So, we need to fix it 
+applying the changes listed in this commit:
+https://github.com/mongodb/mongo/commit/a1e68969d48bbb47c893870f6428048a602faf90
+
+3) Then compile and install MongoDB:
 $ scons all
-$ scons --full install --prefix=/usr --sharedclient
-
+$ sudo scons --full install --prefix=/usr --sharedclient
+$ sudo pip install pymongo
 
 ** RouteFlow **
 1) Install the dependencies:
-$ sudo apt-get install build-essential iproute-dev libboost-all-dev swig1.3
+$ sudo apt-get install build-essential iproute-dev swig1.3
 
 2) Checkout the RouteFlow distribution:
 $ git clone git://github.com/CPqD/RouteFlow.git
@@ -214,5 +222,7 @@ No instructions yet.
       failure of the master RF-Server / Virtualized Control Plane 
 
 - Rename "nox" target to "controller" in Makefile.
+
+- Name modules and applications more uniformly (rf*, not rf-*).
 
 - For smaller changes, see TODO markings in the files.

@@ -40,7 +40,7 @@ if [ "$1" != "clear" ]; then
     mongod --quiet --dbpath $HOME/db --logpath /dev/null &
     sleep 3
 
-    echo "Starting the virtual routers..."
+    echo "Starting the virtual machines..."
     # Create the RFSlave dir
     mkdir /var/lib/lxc/rfvmA/rootfs/opt/rf-slave &>> $LOG_FILE
     mkdir /var/lib/lxc/rfvmB/rootfs/opt/rf-slave &>> $LOG_FILE
@@ -101,7 +101,7 @@ if [ "$1" != "clear" ]; then
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
-    echo "Starting NOX + the RouteFlow network controller..."
+    echo "Starting NOX and the RouteFlow network controller..."
     ( cd rf-controller/build/src && ./nox_core -i ptcp:6633 jsonstats switchstats routeflowc topology --verbose="routeflowc:ANY:INFO" &>> $LOG_FILE & )
     sleep 5
 
@@ -116,9 +116,17 @@ if [ "$1" != "clear" ]; then
     sleep 3
 
     cd - &> /dev/null
-
-    sleep 8
-    echo "Done! Thanks for trying RouteFlow!"
+    sleep 5
+    
+    echo "Now we'll open this test's log."
+    echo "Start Mininet:"
+    echo "  $ sudo mn --custom ~/mininet/custom/topo-4sw-4host.py --topo=rftopo"
+    echo "    --controller=remote --ip=ADDRESS --port=6633"
+    echo "Replace ADDRESS with the address of this host's interface connected "
+    echo "to the Mininet VM."
+    echo "Then try pinging everything:"
+    echo "  > pingall"
+    tail -f $LOG_FILE
 fi
 
 exit 0

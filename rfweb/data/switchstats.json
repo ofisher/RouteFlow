@@ -7,69 +7,97 @@
 			"$flows": [
 			{
 				"flow": "0",
-				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "2899",
-				"byte_count": "238458"
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 10.0.0.2",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "1",
-				"ofp_match": "ip, dl_dst: 32:15:48:f0:60:a1; nw_dst: 172.31.2.0/24",
-				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 32:15:48:f0:60:a1; OUTPUT: port 2; ",
-				"packet_count": "4",
-				"byte_count": "392"
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 30.0.0.3",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 3; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "2",
-				"ofp_match": "ip, dl_dst: 32:15:48:f0:60:a1; nw_dst: 172.31.4.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 32:15:48:f0:60:a1; OUTPUT: port 4; ",
-				"packet_count": "12",
-				"byte_count": "1176"
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 172.31.1.100",
+				"ofp_actions": "SET_DL_DST: 66:80:3b:f1:fd:8c; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 1; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "3",
-				"ofp_match": "ip, dl_dst: 32:15:48:f0:60:a1; nw_dst: 40.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 32:15:48:f0:60:a1; OUTPUT: port 2; ",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 50.0.0.4",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 4; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
 				"flow": "4",
-				"ofp_match": "ip, dl_dst: 32:15:48:f0:60:a1; nw_dst: 172.31.3.0/24",
-				"ofp_actions": "SET_DL_DST: 42:81:05:b8:c3:84; SET_DL_SRC: 32:15:48:f0:60:a1; OUTPUT: port 3; ",
-				"packet_count": "31",
-				"byte_count": "3038"
+				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "598",
+				"byte_count": "49692"
 			},
 			{
 				"flow": "5",
-				"ofp_match": "ip, dl_dst: 32:15:48:f0:60:a1; nw_dst: 20.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 42:81:05:b8:c3:84; SET_DL_SRC: 32:15:48:f0:60:a1; OUTPUT: port 3; ",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 172.31.3.0/24",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 3; ",
+				"packet_count": "10",
+				"byte_count": "980"
+			},
+			{
+				"flow": "6",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 172.31.2.0/24",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 2; ",
+				"packet_count": "2",
+				"byte_count": "196"
+			},
+			{
+				"flow": "7",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 20.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 3; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "6",
+				"flow": "8",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 40.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "9",
+				"ofp_match": "ip, dl_dst: 22:15:fb:10:12:3e; nw_dst: 172.31.4.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 22:15:fb:10:12:3e; OUTPUT: port 4; ",
+				"packet_count": "2",
+				"byte_count": "196"
+			},
+			{
+				"flow": "10",
 				"ofp_match": "arp",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "8",
 				"byte_count": "336"
 			},
 			{
-				"flow": "7",
+				"flow": "11",
 				"ofp_match": "udp; nw_dst: 224.0.0.9",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "8",
+				"flow": "12",
 				"ofp_match": "icmp",
 				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "4",
-				"byte_count": "392"
+				"packet_count": "2",
+				"byte_count": "196"
 			},
 			{
-				"flow": "9",
+				"flow": "13",
 				"ofp_match": "tcp; tp_dst: 179",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
@@ -77,8 +105,8 @@
 			}
 			],
 			"$ofp_desc_stats":["Nicira Networks, Inc.", "Open vSwitch", "1.1.1", "None", "None"],
-			"$ofp_aggr_stats":["2967", "244530", "10"],
-			"$ofp_table_stats":[["0", "classifier", "19", "0"]]
+			"$ofp_aggr_stats":["619", "51350", "14"],
+			"$ofp_table_stats":[["0", "classifier", "23", "0"]]
 		}
 	},
 	{
@@ -90,82 +118,96 @@
 			{
 				"flow": "0",
 				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.2.100",
-				"ofp_actions": "SET_DL_DST: 36:2f:e3:d1:45:13; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 1; ",
+				"ofp_actions": "SET_DL_DST: 8a:10:5a:3f:dd:98; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 1; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
 				"flow": "1",
-				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "1943",
-				"byte_count": "160114"
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 10.0.0.1",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "2",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 50.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 40.0.0.4",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 3; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
 				"flow": "3",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 30.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
-				"packet_count": "0",
-				"byte_count": "0"
+				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "408",
+				"byte_count": "34444"
 			},
 			{
 				"flow": "4",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.3.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
-				"packet_count": "19",
-				"byte_count": "1862"
-			},
-			{
-				"flow": "5",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.4.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 3; ",
-				"packet_count": "6",
-				"byte_count": "588"
-			},
-			{
-				"flow": "6",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.1.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
-				"packet_count": "4",
-				"byte_count": "392"
-			},
-			{
-				"flow": "7",
-				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 20.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 3; ",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 50.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
+				"flow": "5",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 30.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "6",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.3.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
+				"packet_count": "8",
+				"byte_count": "784"
+			},
+			{
+				"flow": "7",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.4.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 3; ",
+				"packet_count": "2",
+				"byte_count": "196"
+			},
+			{
 				"flow": "8",
-				"ofp_match": "arp",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "7",
-				"byte_count": "294"
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 172.31.1.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 2; ",
+				"packet_count": "2",
+				"byte_count": "196"
 			},
 			{
 				"flow": "9",
+				"ofp_match": "ip, dl_dst: 02:ba:ba:ba:ba:ba; nw_dst: 20.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 02:ba:ba:ba:ba:ba; OUTPUT: port 3; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "10",
+				"ofp_match": "arp",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "5",
+				"byte_count": "210"
+			},
+			{
+				"flow": "11",
 				"ofp_match": "udp; nw_dst: 224.0.0.9",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "10",
+				"flow": "12",
 				"ofp_match": "icmp",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "1",
 				"byte_count": "98"
 			},
 			{
-				"flow": "11",
+				"flow": "13",
 				"ofp_match": "tcp; tp_dst: 179",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
@@ -173,8 +215,8 @@
 			}
 			],
 			"$ofp_desc_stats":["Nicira Networks, Inc.", "Open vSwitch", "1.1.1", "None", "None"],
-			"$ofp_aggr_stats":["1984", "163676", "12"],
-			"$ofp_table_stats":[["0", "classifier", "21", "0"]]
+			"$ofp_aggr_stats":["426", "35928", "14"],
+			"$ofp_table_stats":[["0", "classifier", "23", "0"]]
 		}
 	},
 	{
@@ -185,83 +227,97 @@
 			"$flows": [
 			{
 				"flow": "0",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 172.31.3.100",
-				"ofp_actions": "SET_DL_DST: 1e:bb:71:17:36:84; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 1; ",
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 20.0.0.4",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 2; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
 				"flow": "1",
-				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "1939",
-				"byte_count": "159462"
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 172.31.3.100",
+				"ofp_actions": "SET_DL_DST: ea:6f:da:4b:40:29; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 1; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "2",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 172.31.4.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 2; ",
-				"packet_count": "4",
-				"byte_count": "392"
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 30.0.0.1",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 3; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "3",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 40.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 2; ",
-				"packet_count": "0",
-				"byte_count": "0"
+				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "406",
+				"byte_count": "34056"
 			},
 			{
 				"flow": "4",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 172.31.1.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 3; ",
-				"packet_count": "10",
-				"byte_count": "980"
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 172.31.4.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 2; ",
+				"packet_count": "2",
+				"byte_count": "196"
 			},
 			{
 				"flow": "5",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 10.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 3; ",
-				"packet_count": "0",
-				"byte_count": "0"
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 172.31.2.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 2; ",
+				"packet_count": "8",
+				"byte_count": "784"
 			},
 			{
 				"flow": "6",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 50.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 2; ",
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 172.31.1.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 3; ",
+				"packet_count": "2",
+				"byte_count": "196"
+			},
+			{
+				"flow": "7",
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 10.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 3; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "7",
-				"ofp_match": "ip, dl_dst: 42:81:05:b8:c3:84; nw_dst: 172.31.2.0/24",
-				"ofp_actions": "SET_DL_DST: 16:02:e9:eb:b9:0b; SET_DL_SRC: 42:81:05:b8:c3:84; OUTPUT: port 2; ",
-				"packet_count": "19",
-				"byte_count": "1862"
-			},
-			{
 				"flow": "8",
-				"ofp_match": "arp",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "8",
-				"byte_count": "336"
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 40.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "9",
+				"ofp_match": "ip, dl_dst: 6a:a0:b3:37:b5:07; nw_dst: 50.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: d2:f7:77:5d:0b:45; SET_DL_SRC: 6a:a0:b3:37:b5:07; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "10",
+				"ofp_match": "arp",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "6",
+				"byte_count": "252"
+			},
+			{
+				"flow": "11",
 				"ofp_match": "udp; nw_dst: 224.0.0.9",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "10",
+				"flow": "12",
 				"ofp_match": "icmp",
 				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "2",
-				"byte_count": "196"
+				"packet_count": "5",
+				"byte_count": "490"
 			},
 			{
-				"flow": "11",
+				"flow": "13",
 				"ofp_match": "tcp; tp_dst: 179",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
@@ -269,8 +325,8 @@
 			}
 			],
 			"$ofp_desc_stats":["Nicira Networks, Inc.", "Open vSwitch", "1.1.1", "None", "None"],
-			"$ofp_aggr_stats":["1986", "163556", "12"],
-			"$ofp_table_stats":[["0", "classifier", "21", "0"]]
+			"$ofp_aggr_stats":["429", "35974", "14"],
+			"$ofp_table_stats":[["0", "classifier", "23", "0"]]
 		}
 	},
 	{
@@ -281,69 +337,97 @@
 			"$flows": [
 			{
 				"flow": "0",
-				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
-				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "2907",
-				"byte_count": "239366"
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 172.31.4.100",
+				"ofp_actions": "SET_DL_DST: 3e:43:b5:09:c4:27; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 1; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "1",
-				"ofp_match": "ip, dl_dst: 16:02:e9:eb:b9:0b; nw_dst: 172.31.1.0/24",
-				"ofp_actions": "SET_DL_DST: 32:15:48:f0:60:a1; SET_DL_SRC: 16:02:e9:eb:b9:0b; OUTPUT: port 4; ",
-				"packet_count": "16",
-				"byte_count": "1568"
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 40.0.0.2",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
 			},
 			{
 				"flow": "2",
-				"ofp_match": "ip, dl_dst: 16:02:e9:eb:b9:0b; nw_dst: 10.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 16:02:e9:eb:b9:0b; OUTPUT: port 2; ",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 20.0.0.3",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 3; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
 				"flow": "3",
-				"ofp_match": "ip, dl_dst: 16:02:e9:eb:b9:0b; nw_dst: 172.31.3.0/24",
-				"ofp_actions": "SET_DL_DST: 42:81:05:b8:c3:84; SET_DL_SRC: 16:02:e9:eb:b9:0b; OUTPUT: port 3; ",
-				"packet_count": "4",
-				"byte_count": "392"
-			},
-			{
-				"flow": "4",
-				"ofp_match": "ip, dl_dst: 16:02:e9:eb:b9:0b; nw_dst: 30.0.0.0/24",
-				"ofp_actions": "SET_DL_DST: 42:81:05:b8:c3:84; SET_DL_SRC: 16:02:e9:eb:b9:0b; OUTPUT: port 3; ",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 50.0.0.1",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 4; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
+				"flow": "4",
+				"ofp_match": "ospf; tp_src: 0; tp_dst: 0",
+				"ofp_actions": "OUTPUT: port 65533; ",
+				"packet_count": "605",
+				"byte_count": "51050"
+			},
+			{
 				"flow": "5",
-				"ofp_match": "ip, dl_dst: 16:02:e9:eb:b9:0b; nw_dst: 172.31.2.0/24",
-				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: 16:02:e9:eb:b9:0b; OUTPUT: port 2; ",
-				"packet_count": "27",
-				"byte_count": "2646"
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 172.31.1.0/24",
+				"ofp_actions": "SET_DL_DST: 22:15:fb:10:12:3e; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 4; ",
+				"packet_count": "2",
+				"byte_count": "196"
 			},
 			{
 				"flow": "6",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 172.31.2.0/24",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 2; ",
+				"packet_count": "10",
+				"byte_count": "980"
+			},
+			{
+				"flow": "7",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 30.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 3; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "8",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 172.31.3.0/24",
+				"ofp_actions": "SET_DL_DST: 6a:a0:b3:37:b5:07; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 3; ",
+				"packet_count": "2",
+				"byte_count": "196"
+			},
+			{
+				"flow": "9",
+				"ofp_match": "ip, dl_dst: d2:f7:77:5d:0b:45; nw_dst: 10.0.0.0/24",
+				"ofp_actions": "SET_DL_DST: 02:ba:ba:ba:ba:ba; SET_DL_SRC: d2:f7:77:5d:0b:45; OUTPUT: port 2; ",
+				"packet_count": "0",
+				"byte_count": "0"
+			},
+			{
+				"flow": "10",
 				"ofp_match": "arp",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "8",
 				"byte_count": "336"
 			},
 			{
-				"flow": "7",
+				"flow": "11",
 				"ofp_match": "udp; nw_dst: 224.0.0.9",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
 				"byte_count": "0"
 			},
 			{
-				"flow": "8",
+				"flow": "12",
 				"ofp_match": "icmp",
 				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "1",
-				"byte_count": "98"
+				"packet_count": "5",
+				"byte_count": "490"
 			},
 			{
-				"flow": "9",
+				"flow": "13",
 				"ofp_match": "tcp; tp_dst: 179",
 				"ofp_actions": "OUTPUT: port 65533; ",
 				"packet_count": "0",
@@ -351,13 +435,13 @@
 			}
 			],
 			"$ofp_desc_stats":["Nicira Networks, Inc.", "Open vSwitch", "1.1.1", "None", "None"],
-			"$ofp_aggr_stats":["2963", "244406", "10"],
-			"$ofp_table_stats":[["0", "classifier", "19", "0"]]
+			"$ofp_aggr_stats":["632", "53248", "14"],
+			"$ofp_table_stats":[["0", "classifier", "23", "0"]]
 		}
 	},
 	{
-		"id": "150873424568",
-		"name": "switch150873424568",
+		"id": "150875504882",
+		"name": "switch150875504882",
 		"data": {
 			"$dp_id": "dp5",
 			"$flows": [
@@ -365,12 +449,12 @@
 				"flow": "0",
 				"ofp_match": "",
 				"ofp_actions": "OUTPUT: port 65533; ",
-				"packet_count": "14296",
-				"byte_count": "1154243"
+				"packet_count": "5297",
+				"byte_count": "425905"
 			}
 			],
 			"$ofp_desc_stats":["Nicira Networks, Inc.", "rfovs", "1.1.0", "None", "None"],
-			"$ofp_aggr_stats":["14296", "1154243", "1"],
+			"$ofp_aggr_stats":["5297", "425905", "1"],
 			"$ofp_table_stats":[["0", "classifier", "1", "0"]]
 		}
 	}
