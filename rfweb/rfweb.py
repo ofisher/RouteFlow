@@ -42,8 +42,11 @@ exts = {
 ".json": JSON,
 }
 
-conn = pymongo.Connection("localhost", 27017)
-
+try:
+    conn = pymongo.Connection("localhost", 27017)
+except:
+    pass
+    
 def messages(env):
     channel = shift_path_info(env)
     if channel != None and channel != "":

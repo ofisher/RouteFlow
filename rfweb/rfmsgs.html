@@ -59,7 +59,7 @@ types = {
 }
 
 rowtemplate = "<tr class=\"row bg\{style}\">"
-rowtemplate += "<td id=\"msg_{id}_expand\" class=\"expand_control\" onclick=\"toggle('msg_{id}')\">+</td>";
+rowtemplate += "<td class=\"expand_control\" id=\"msg_{id}_expand\" onclick=\"toggle('msg_{id}')\"><span class=\"ui-icon ui-icon-triangle-1-e\">Details</span></td>";
 rowtemplate += "<td>{to}</td>"
 rowtemplate += "<td>{status}</td>"
 rowtemplate += "<td>{type}</td>"
@@ -77,6 +77,10 @@ function process_message(i, msgprefix, msg) {
     msg["id"] = msgprefix + i;
     msg["type"] = types[msg["type"]].name;
     
+    var to = toHex(parseInt(msg["to"]), 64);
+    if (to != "")
+        msg["to"] = to;
+        
     if (msg["read"])
         msg["status"] = "read"
     else
@@ -122,11 +126,11 @@ function toggle(id) {
     var ex = document.getElementById(id + "_expand");
     if (el.getAttribute("class") == "hidden_msg_content") {
         el.setAttribute("class", "msg_content");
-        ex.innerHTML = "-";
+        ex.innerHTML = "<span class=\"ui-icon ui-icon-triangle-1-s\">Details</span>";
     }
     else {
         el.setAttribute("class", "hidden_msg_content");
-        ex.innerHTML = "+";
+        ex.innerHTML = "<span class=\"ui-icon ui-icon-triangle-1-e\">Details</span>";
     }
 }
 
@@ -154,7 +158,7 @@ function start() {
 </script>
 
 <div>
-<div class="first section" id="control">
+<div class="section" id="control">
     <div class="section_title">Filters</div>
     <div class="subsection">
         By message type:

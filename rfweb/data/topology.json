@@ -13,7 +13,7 @@
 		],
 		"data": {
 			"$type": "rf-server",
-			"timer": 1332426405,
+			"timer": 1332881534,
 			"$dim": 20,
 			"$x": -50,
 			"$y": -170,
@@ -30,7 +30,7 @@
 		},
 		"data": {
 			"$type": "controller",
-			"timer": 1332426405,
+			"timer": 1332881534,
 			"$dim": 25,
 			"$x": 100,
 			"$y": -170,
@@ -52,9 +52,9 @@
 		],
 		"data": {
 			"$type": "of-switch",
-			"timer": 1332426405,
+			"timer": 1332881534,
 			"$dim": 20,
 			"latitude": -18,
-			"longitude": -44
+			"longitude": -41
 		}
 	}]}

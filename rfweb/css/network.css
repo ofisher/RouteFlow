@@ -1,112 +1,34 @@
 @charset "UTF-8";
 
-#graphDiv {
-    margin:0;
-    padding:0;
-    text-align: center;
-    background-color:#FFF;
+#root {
 }
 
-#graphDiv input, select {
-    font-size:0.9em;
-}
-
-#graphDiv table {
-/*    margin-top:5px;*/
-}
-
-#graphDiv h4 {
-    font-size:1.1em;
-    text-decoration:none;
-    font-weight:bold;
-    text-align: center;
-    background-color:#145D80;
-    color:#FFFFFF;
-}
-
-#graphDiv a {
-    color:#23A4FF;
-}
-
-#graphDiv span.close {
-    color:#FF5555;
-    cursor:pointer;
-    font-weight:bold;
-    margin-left:3px;
-}
-
-#graphDiv span.name {
-  cursor: pointer;
-}
-
-#graph-container {
-/*    width:980px;
-    height:295px;*/
-    margin:0 auto;
-/*    position:absolute;*/
-}
-
-#left-graph-container, 
-#right-graph-container, 
-#center-graph-container {
-/*    top:0;*/
-    height:425px;
-/*    position:absolute;*/
-}
-
-#right-graph-container {
-}
-
-#left-graph-container {
-    left:0;
-/*    background-image:url('col2.png');*/
-    background-position:center right;
-    border-left:1px solid #ddd;
-    float: left;
-}
-
-#right-graph-container {
-/*    left:780px;*/
-/*    background-image:url('col1.png');*/
-    background-color:#fff;
-    background-repeat:no-repeat;
-    border-bottom:1px solid #ddd;
-    background-position:center left;
-    border-right:1px solid #ddd;
-    color:#686c70;
-    float: right;
-    overflow: auto;
-    text-align: left;
-    width:20%;
-}
-
-#right-graph-container h4{
-    text-indent:8px;
-}
-
-#center-graph-container {
-    width:80%;
-/*    left:200px;*/
+#infovis {
+    height: 400px;
+    width: 78%;
     background-color:#fff;
     color:#ccc;
+    border: 1px solid #F2F2F2;
+    display: inline-block;
 }
 
-#bottom-graph-container {
-/*    position:absolute;*/
-/*    top: 230px;
-    bottom: 0;*/
-    width:100%;
-/*    height:200px;*/
-    color:#686c70;
+#switchinfo {
+    width: 21%;
+    vertical-align: top;
+    display: inline-block;
+}
+
+#flows {
+    width: 100%;
     text-align: left;
-/*    overflow: auto;*/
     text-indent:8px;
-    font-size:12px;
-/*    background-image:url('col_bottom.png');*/
-    background-position: left;
-    background-color:#fff;
-    background-repeat:no-repeat;
-    border-bottom:1px solid #ddd;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#flows table {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .text {
@@ -114,7 +36,6 @@
 }
 
 #inner-graph-details {
-    font-size:0.8em;
     list-style:none;
     margin:7px;
 }
@@ -125,15 +46,6 @@
     font-size:1.0em;
     font-weight:bold;
     color:#23A4FF;
-}
-
-
-#infovis {
-/*    position:absolute;*/
-    width:100%;
-    height:100%;
-    margin:auto;
-    overflow:hidden;
 }
 
 /*TOOLTIPS*/
@@ -156,10 +68,6 @@
     max-width:500px;
 }
 
-#inner-graph-details {
-    font-size:12px;
-}
-
 .tip-title {
   font-size: 11px;
   text-align:center;
@@ -172,24 +80,9 @@
     padding: 0px 0px 0px 25px;
 }
 
-#bottom-details {
-    width:100%;
-}
-
-/*#bottom-table-title {
-    overflow:hidden;
-    width:100%;
-}*/
-
-#bottom-table {
-/*    height:180px;*/
-    overflow:auto;
-    width:100%;
-}
 
 .table-row-header {
     background-color: #145D80;
-    border-bottom: 3px;
     color: #FFFFFF;
     width:100%;
     font-weight: bold;

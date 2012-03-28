@@ -44,8 +44,8 @@ a {
 
 .label {
     cursor: default;
-    font-size: 0.8em;
-    color: #ffffff;
+    font: bold 12px sans;
+    color: #000000;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -85,8 +85,7 @@ a {
 
 #center-container {
     width:80%;
-    background-color:#1a1a1a;
-    color:#ccc;
+    background-color:#ffffff;
 }
 
 .text {

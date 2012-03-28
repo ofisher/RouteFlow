@@ -1,23 +1,24 @@
 <link href="css/network.css" rel="stylesheet" type="text/css" />
 
-<script language="javascript" type="text/javascript" src="lib/jit.js" />
-<script language="javascript" type="text/javascript" src="lib/routeflow/example1.js" />
+<script language="javascript" type="text/javascript" src="js/jit/jit_mod.js" />
+<script language="javascript" type="text/javascript" src="js/rf/rfnetwork.js" />
 
 <div id="root">
-    <div id="graphDiv">
-        <div id="graph-container">
-            <div id="right-graph-container">
-                <div id="inner-details"></div>
+            <div id="infovis"></div>
+            
+            <div id="switchinfo">
+				<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"> 
+					<p>
+					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+					Select a switch to display its information, statistics and flow table.
+					</p>
+				</div>
             </div>
-            <div id="center-graph-container">
-                <div id="infovis"></div>
+                
+            <div id="flows">
             </div>
-            <div id="bottom-graph-container">
-                <div id="bottom-details"></div>
-            </div>
+            
             <div id="log"></div>
-        </div>
-    </div>
 </div>
 
 <script> graph_init(); </script>
