@@ -41,77 +41,82 @@ if [ "$1" != "clear" ]; then
     sleep 3
 
     echo "Starting the virtual routers..."
+    # Create the RFSlave dir
     mkdir /var/lib/lxc/rfvmA/rootfs/opt/rf-slave &>> $LOG_FILE
     mkdir /var/lib/lxc/rfvmB/rootfs/opt/rf-slave &>> $LOG_FILE
     mkdir /var/lib/lxc/rfvmC/rootfs/opt/rf-slave &>> $LOG_FILE
     mkdir /var/lib/lxc/rfvmD/rootfs/opt/rf-slave &>> $LOG_FILE
-    
+
+    # Copy the RFSlave executable
     cp build/rf-slave /var/lib/lxc/rfvmA/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
     cp build/rf-slave /var/lib/lxc/rfvmB/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
     cp build/rf-slave /var/lib/lxc/rfvmC/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
     cp build/rf-slave /var/lib/lxc/rfvmD/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
-    
-    cp test.in /var/lib/lxc/rfvmA/rootfs/opt/rf-slave &>> $LOG_FILE
-    cp test.in /var/lib/lxc/rfvmB/rootfs/opt/rf-slave &>> $LOG_FILE
-    cp test.in /var/lib/lxc/rfvmC/rootfs/opt/rf-slave &>> $LOG_FILE
-    cp test.in /var/lib/lxc/rfvmD/rootfs/opt/rf-slave &>> $LOG_FILE
-    
+
+    cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvmA/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvmA/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvmB/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvmB/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvmC/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvmC/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvmD/rootfs/usr/lib &>> $LOG_FILE
+    cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvmD/rootfs/usr/lib &>> $LOG_FILE
+
     # We need to start the VMs with different sleep times to guarantee their order.
     # This is a known Routeflow limitation, and we plan to eliminate it in the future.
     echo "#!/bin/sh" > /var/lib/lxc/rfvmA/rootfs/root/run_rfslave.sh
     echo "sleep 5" >> /var/lib/lxc/rfvmA/rootfs/root/run_rfslave.sh
     echo "/etc/init.d/quagga start" >> /var/lib/lxc/rfvmA/rootfs/root/run_rfslave.sh
     echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvmA/rootfs/root/run_rfslave.sh
-    
+
     echo "#!/bin/sh" > /var/lib/lxc/rfvmB/rootfs/root/run_rfslave.sh
     echo "sleep 10" >> /var/lib/lxc/rfvmB/rootfs/root/run_rfslave.sh
     echo "/etc/init.d/quagga start" >> /var/lib/lxc/rfvmB/rootfs/root/run_rfslave.sh
     echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvmB/rootfs/root/run_rfslave.sh
-    
+
     echo "#!/bin/sh" > /var/lib/lxc/rfvmC/rootfs/root/run_rfslave.sh
     echo "sleep 15" >> /var/lib/lxc/rfvmC/rootfs/root/run_rfslave.sh
     echo "/etc/init.d/quagga start" >> /var/lib/lxc/rfvmC/rootfs/root/run_rfslave.sh
     echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvmC/rootfs/root/run_rfslave.sh
-    
+
     echo "#!/bin/sh" > /var/lib/lxc/rfvmD/rootfs/root/run_rfslave.sh
     echo "sleep 20" >> /var/lib/lxc/rfvmD/rootfs/root/run_rfslave.sh
     echo "/etc/init.d/quagga start" >> /var/lib/lxc/rfvmD/rootfs/root/run_rfslave.sh
     echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvmD/rootfs/root/run_rfslave.sh
-                
+
     chmod +x /var/lib/lxc/rfvmA/rootfs/root/run_rfslave.sh
     chmod +x /var/lib/lxc/rfvmB/rootfs/root/run_rfslave.sh
     chmod +x /var/lib/lxc/rfvmC/rootfs/root/run_rfslave.sh
     chmod +x /var/lib/lxc/rfvmD/rootfs/root/run_rfslave.sh
-                
+
     lxc-start -n rfvmA -d &>> $LOG_FILE
     lxc-start -n rfvmB -d &>> $LOG_FILE
     lxc-start -n rfvmC -d &>> $LOG_FILE
     lxc-start -n rfvmD -d &>> $LOG_FILE
-    
+
     echo "Starting the management network (br0)..."
     ( cd rf-controller/build/src && ./nox_core -i ptcp:6363 switch -d ) &>> $LOG_FILE
-    sleep 3
+    sleep 5
     ovs-openflowd br0 tcp:127.0.0.1:6363 --out-of-band --detach --ports=rfvmA.0,rfvmB.0,rfvmC.0,rfvmD.0 &>> $LOG_FILE
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
     echo "Starting NOX + the RouteFlow network controller..."
     ( cd rf-controller/build/src && ./nox_core -i ptcp:6633 jsonstats switchstats routeflowc topology --verbose="routeflowc:ANY:INFO" &>> $LOG_FILE & )
-    # ( cd rf-controller/build/src && ./nox_core -i ptcp:6633 routeflowc -v &>> $LOG_FILE & )  
-    sleep 3
-    
+    sleep 5
+
     echo "Starting the RouteFlow server..."
     build/rf-server &>> $LOG_FILE &
     sleep 3
-    
+
     echo "Starting the control plane network (dp0 OVS)..."
     ovs-openflowd --hw-desc=rfovs dp0 tcp:127.0.0.1:6633 --out-of-band --detach \
     --ports=rfvmA.1,rfvmA.2,rfvmA.3,rfvmA.4,rfvmB.1,rfvmB.2,rfvmB.3,rfvmC.1,rfvmC.2,rfvmC.3,rfvmD.1,rfvmD.2,rfvmD.3,rfvmD.4 &>> $LOG_FILE
     ifconfig dp0 up
     sleep 3
-    
+
     cd - &> /dev/null
-    
+
     sleep 8
     echo "Done! Thanks for trying RouteFlow!"
 fi

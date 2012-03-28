@@ -13,7 +13,7 @@
 		],
 		"data": {
 			"$type": "rf-server",
-			"timer": 1332881534,
+			"timer": 1332938983,
 			"$dim": 20,
 			"$x": -50,
 			"$y": -170,
@@ -30,12 +30,121 @@
 		},
 		"data": {
 			"$type": "controller",
-			"timer": 1332881534,
+			"timer": 1332938983,
 			"$dim": 25,
 			"$x": 100,
 			"$y": -170,
 			"latitude": -22.002466,
 			"longitude": -46.062749
+		}
+	},
+	{
+		"id": "5",
+		"name": "switch5",
+		"adjacencies": [
+			{
+				"nodeTo": "controller",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "6",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "7",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "5",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"timer": 1332938983,
+			"$dim": 20,
+			"latitude": -23,
+			"longitude": -49
+		}
+	},
+	{
+		"id": "6",
+		"name": "switch6",
+		"adjacencies": [
+			{
+				"nodeTo": "controller",
+				"nodeFrom": "6",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "5",
+				"nodeFrom": "6",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "6",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"timer": 1332938983,
+			"$dim": 20,
+			"latitude": -26,
+			"longitude": -44
+		}
+	},
+	{
+		"id": "7",
+		"name": "switch7",
+		"adjacencies": [
+			{
+				"nodeTo": "controller",
+				"nodeFrom": "7",
+				"data": {
+					"$color": "#145D80"
+				}
+			},
+			{
+				"nodeTo": "5",
+				"nodeFrom": "7",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "8",
+				"nodeFrom": "7",
+				"data": {
+					"$color": "#010101"
+				}
+			}
+		],
+		"data": {
+			"$type": "of-switch",
+			"timer": 1332938983,
+			"$dim": 20,
+			"latitude": -20,
+			"longitude": -44
 		}
 	},
 	{
@@ -48,13 +157,34 @@
 				"data": {
 					"$color": "#145D80"
 				}
+			},
+			{
+				"nodeTo": "5",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "6",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
+			},
+			{
+				"nodeTo": "7",
+				"nodeFrom": "8",
+				"data": {
+					"$color": "#010101"
+				}
 			}
 		],
 		"data": {
 			"$type": "of-switch",
-			"timer": 1332881534,
+			"timer": 1332938983,
 			"$dim": 20,
-			"latitude": -18,
-			"longitude": -41
+			"latitude": -26,
+			"longitude": -46
 		}
 	}]}

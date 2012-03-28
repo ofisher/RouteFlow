@@ -2,28 +2,50 @@ RouteFlow 1.0
 Copyright (C) 2012 CPqD
 
 === Welcome ===
-Welcome to the RouteFlow remote virtual routing platform.  This distribution includes all the software you need to build, install, and deploy RouteFlow in your OpenFlow network.
+Welcome to the RouteFlow remote virtual routing platform.  This distribution 
+includes all the software you need to build, install, and deploy RouteFlow in 
+your OpenFlow network.
 
-This version of RouteFlow is a beta developers' release intended to evaluate RouteFlow for providing virtualized IP routing services on one or more OpenFlow switches.
+This version of RouteFlow is a beta developers' release intended to evaluate 
+RouteFlow for providing virtualized IP routing services on one or more OpenFlow 
+switches.
 
 RouteFlow relies on the following technologies:
-- NOX v0.9 and OpenFlow v1.0 as the communication protocol for controlling switches.
-- Open vSwitch to provide the connectivity within the virtual environmentwhere Linux virtual machines may run the Quagga routing engine.
+- NOX v0.9 and OpenFlow v1.0 as the communication protocol for controlling 
+  switches.
+- Open vSwitch to provide the connectivity within the virtual environmentwhere 
+  Linux virtual machines may run the Quagga routing engine.
 - MongoDB v2.0.2 as a central database and IPC.
 
-Please be aware of NOX, OpenFlow, Open vSwitch, Quagga, MongoDB and RouteFlow licenses.
+Please be aware of NOX, OpenFlow, Open vSwitch, Quagga, MongoDB and RouteFlow 
+licenses.
 
 
 === Overview ===
-RouteFlow is made of three basic applications: rf-slave, rf-server, rf-controller:
+RouteFlow is made of three basic applications: rf-slave, rf-server and 
+rf-controller. Additionally, there are two extra modules: rfweb, an web 
+interface for RouteFlow and jsonflowagent, an SNMP agent.
 
-- RF-Slave is the module running as a daemon in the Virtual Machine (VM) responsible for detecting changes in the linux ARP and routing tables. When a change is detected (via netlink events) messages are sent to the server.
+- RF-Slave is the module running as a daemon in the Virtual Machine (VM) 
+responsible for detecting changes in the linux ARP and routing tables. 
+When a change is detected (via netlink events) messages are sent to the server.
 
-- RF-Server is a standalone application that manages the VMs running the RF-Slave daemons. The RF-Server keeps the mapping between the RF-Slave VM instances and the corresponding switches and their datapaths. It connects to the RF-Controller to instruct it about when to configure flows and also to configure the Open vSwitch to maintain the connectivity in the virtual environment formed by the set of registered VMs.
+- RF-Server is a standalone application that manages the VMs running the 
+RF-Slave daemons. The RF-Server keeps the mapping between the RF-Slave VM 
+instances and the corresponding switches and their datapaths. It connects to 
+the RF-Controller to instruct it about when to configure flows and also to 
+configure the Open vSwitch to maintain the connectivity in the virtual 
+environment formed by the set of registered VMs.
 
-- RF-Controller is a NOX (OpenFlow controller) application responsible for the interactions with the OpenFlow switches (identified by datapaths) via the OpenFlow protocol. It listens to instructions from the RF-Server and also notifies whenever a switch joins or leavens the network.
+- RF-Controller is a NOX (OpenFlow controller) application responsible for the 
+interactions with the OpenFlow switches (identified by datapaths) via the 
+OpenFlow protocol. It listens to instructions from the RF-Server and also 
+notifies whenever a switch joins or leavens the network.
 
-There is also a library (rflib) of common functions to all three applications. This library is in the folder "common". It defines the IPC, a central table for RouteFlow state data and utilities like custom types for IP and MAC addresses, OpenFlow message creation and type conversion.
+There is also a library (rflib) of common functions to all three applications. 
+This library is in the folder "common". It defines the IPC, a central table for 
+RouteFlow state data and utilities like custom types for IP and MAC addresses, 
+OpenFlow message creation and type conversion.
 
 +--------VM---------+
 | Quagga | RF-Slave |
@@ -53,33 +75,76 @@ M:1      \ RFProtocol
 === Building ===
 These instructions are tested on Ubuntu 11.04.
 
-Dependencies:
-On Ubuntu 11.04, a RouteFlow setup requires the following packages to be installed:
-build-essential iproute-dev libboost-all-dev swig1.3
+** Open vSwitch **
+1) Install the dependencies:
 
-Then, for each external dependency:
-Open vSwitch v1.10: linux-headers-generic
+$ sudo apt-get install linux-headers-generic
 
-NOX v0.9 (bundled with RouteFlow): autoconf automake g++ libtool swig make git-core libboost-dev libboost-test-dev libboost-filesystem-dev libssl-dev libpcap-dev python-twisted python-simplejson python-dev
 
-MongoDB v2.0.2: git-core build-essential scons libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+** NOX install instructions **
+1) Install the dependencies:
+$ sudo apt-get install autoconf automake g++ libtool swig make git-core 
+  libboost-dev libboost-test-dev libboost-filesystem-dev libssl-dev libpcap-dev 
+  python-twisted python-simplejson python-dev
 
-[Open vSwitch install instructions]
-[NOX install instructions]
-[MongoDB install instructions]
+2) TwistedPython, one of the dependencies of the NOX controller bundled with 
+the RouteFlow distribution, got an update that made it stop working.
+To get around this issue, edit the following file in your machine:
+$ sudo vi /usr/lib/python2.6/dist-packages/twisted/internet/base.py
 
-You can compile all RouteFlow applications by running the following command in the project root:
+Insert the method _handleSigchld at the end of the file, just before the last 
+statement (the one that reads "__all__ = []"):
 
+[other lines above... (supressed) ]
+            except:
+                log.msg("Unexpected error in main loop.")
+                log.err()
+            else:
+                log.msg('Main loop terminated.')
+
+    def _handleSigchld(self, signum, frame, _threadSupport=platform.supportsThreads()):
+        from twisted.internet.process import reapAllProcesses
+        if _threadSupport:
+            self.callFromThread(reapAllProcesses)
+        else:
+            self.callLater(0, reapAllProcesses)
+
+__all__ = []
+
+Save the file and you're ready to go.
+
+NOX will be compiled with the RouteFlow distribution in the steps ahead.
+
+
+** MongoDB **
+1) Install the dependencies:
+$ sudo apt-get install git-core build-essential scons libboost-dev 
+  libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+
+2) To compile and install MongoDB:
+$ scons all
+$ scons --full install --prefix=/usr --sharedclient
+
+
+** RouteFlow **
+1) Install the dependencies:
+$ sudo apt-get install build-essential iproute-dev libboost-all-dev swig1.3
+
+2) Checkout the RouteFlow distribution:
+$ git clone git://github.com/CPqD/RouteFlow.git
+$ git checkout NewRouteFlow
+
+3) You can compile all RouteFlow applications by running the following command 
+in the project root:
 $ make all
 
 You can also compile them individually:
-
 $ make slave
 $ make server
 $ make nox
 
-After the build, you can run tests 1 and 2. The setup to run them is described in the section "Running".
-
+4) That's it, everything is installed! After the build, you can run tests 1 and 
+2. The setup to run them is described in the section "Running".
 
 === Running ===
 No instructions yet.
@@ -93,25 +158,31 @@ No instructions yet.
 === TODO (+ features expected in upcoming versions) ===
 - Tests and instructions for other virtualization environments
 
-- Dynamic virtual topology maintenance, with selective routing protocol messages delivery to the datapath.
+- Dynamic virtual topology maintenance, with selective routing protocol messages 
+  delivery to the datapath.
 
-- Flexible mapping (M:1, 1:N and M:N) between Datapath and VMs, allowing for virtual routing approaches and/or physical switch stacking.
+- Flexible mapping (M:1, 1:N and M:N) between Datapath and VMs, allowing for 
+  virtual routing approaches and/or physical switch stacking.
 
 - Hooks into Quagga Zebra to reflect link up/down events
 
-- Improve the scenario where routing protocol messages are kept in the virtual domain and topology updates are replicated in response to an OpenFlow-based topology discovery and maintenance approach.
+- Improve the scenario where routing protocol messages are kept in the virtual 
+  domain and topology updates are replicated in response to an OpenFlow-based 
+  topology discovery and maintenance approach.
 
 - Keep routing packets in the virtual plane.
 
-- Properly separate rflib and implement it in other languages, allowing for applications to be built for other controllers.
+- Properly separate rflib and implement it in other languages, allowing for 
+  applications to be built for other controllers.
 
 - Create headers for RFSlave.cc and RFServer.cc.
 
-- Let the (RF-Server order the) RF-Slave set the VM's non-administrative interfaces to the same MAC Address. 
+- Let the (RF-Server order the) RF-Slave set the VM's non-administrative 
+  interfaces to the same MAC Address. 
 
-- Create a verbose mode to RF-Server (server info are only available on log files).
+- Create a verbose mode for RF-Server.
 
-- Get TCP port, ovs name and RouteFlow operation from user arguments on RF-Server.
+- Configuration arguments for RF-Server.
 
 - Wireshark dissector plugin for the RouteFlow protocol
 
@@ -123,18 +194,24 @@ No instructions yet.
 
 - Explore integration opportunities with FlowVisor
 
-- Libvirt: Virtualization-independence to accomodate alternative virtualization environments via unified virtualization API provided by libvirt
+- Libvirt: Virtualization-independence to accomodate alternative virtualization 
+  environments via unified virtualization API provided by libvirt
     - provide on-demand start-up of VMs via libvirt upon interactions (e.g. CLI) with RF-Server)
 
 - Routing Protocol Optimization: 
     - Separate topology discovery and maintenance from state distribution
-    - Dynamic virtual topology maintenance, with selective routing protocol messages delivery to the Datapath (e.g., HELLOs).
-    - Improve the scenario where routing protocol messages are kept in the virtual domain and topology is mantained through a  Topology Discovery controller application.
+    - Dynamic virtual topology maintenance, with selective routing protocol 
+      messages delivery to the Datapath (e.g., HELLOs).
+    - Improve the scenario where routing protocol messages are kept in the 
+      virtual domain and topology is mantained through a  Topology Discovery 
+      controller application.
     - Hooks into Quagga Zebra to reflect link up/down events
 
 - Resiliency & Scalability:
-    - Physically distribute the virtualization environment via mutliple OVS providing the connectivity of the virtual control network
-    - Improve resiliency: Have a "stand-by" environment to take over in case of failure of the master RF-Server / Virtualized Control Plane 
+    - Physically distribute the virtualization environment via mutliple OVS 
+      providing the connectivity of the virtual control network
+    - Improve resiliency: Have a "stand-by" environment to take over in case of 
+      failure of the master RF-Server / Virtualized Control Plane 
 
 - Rename "nox" target to "controller" in Makefile.
 
