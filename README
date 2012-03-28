@@ -79,8 +79,10 @@ These instructions are tested on Ubuntu 11.04.
 
 ** Open vSwitch **
 1) Install the dependencies:
-
 $ sudo apt-get install linux-headers-generic
+
+2) Follow the instructions in section "1. Open vSwitch setup" at:
+https://sites.google.com/site/routeflow/documents/first-routeflow
 
 
 ** NOX install instructions **
@@ -154,12 +156,15 @@ $ make nox
 4) That's it, everything is installed! After the build, you can run tests 1 and 
 2. The setup to run them is described in the section "Running".
 
+
 === Running ===
 No instructions yet.
 
 
 === Known Bugs ===
-- RF-Controller randomly (and somewhat rarely) segfaults without any clear reason.
+- RF-Controller randomly (and somewhat rarely) segfaults without any clear 
+  reason.
+
 - See: http://bugs.openflowhub.org/browse/ROUTEFLOW
 
 
@@ -204,7 +209,8 @@ No instructions yet.
 
 - Libvirt: Virtualization-independence to accomodate alternative virtualization 
   environments via unified virtualization API provided by libvirt
-    - provide on-demand start-up of VMs via libvirt upon interactions (e.g. CLI) with RF-Server)
+    - provide on-demand start-up of VMs via libvirt upon interactions (e.g. CLI) 
+      with RF-Server)
 
 - Routing Protocol Optimization: 
     - Separate topology discovery and maintenance from state distribution
