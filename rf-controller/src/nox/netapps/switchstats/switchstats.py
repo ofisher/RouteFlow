@@ -572,9 +572,10 @@ class switchstats(Component):
 
 		# IMPRIMINDO AGGREGATE STATS
 		x = mongo_stats[dp_list[i]]["aggr"].find_one()
-                value = '\t\t\t"$ofp_aggr_stats":["' + str(x["packet_count"]) + '", '
-                value = value + '"' + str(x["byte_count"]) + '", '
-                value = value + '"' + str(x["flow_count"]) + '"],\n'
+		if (x is not None):		
+                    value = '\t\t\t"$ofp_aggr_stats":["' + str(x["packet_count"]) + '", '
+                    value = value + '"' + str(x["byte_count"]) + '", '
+                    value = value + '"' + str(x["flow_count"]) + '"],\n'
 
 		#value = '\t\t\t"$ofp_aggr_stats":["' + r.get('dp_aggr_stats:' + str(dp_list[i]) + ':packet_count') + '", '
                 #value = value + '"' + r.get('dp_aggr_stats:' + str(dp_list[i]) + ':byte_count') + '", '
