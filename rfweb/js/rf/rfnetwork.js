@@ -48,10 +48,8 @@ function routeFlowDemo(jsonTopology) {
 		//by scrolling and DnD
 		Navigation: {
 			enable: true,
-			//Enable panning events only if we're dragging the empty
-			//canvas (and not a node).
 			panning: 'avoid nodes',
-			zooming: 10 //zoom speed. higher is more sensible
+			zooming: 10,
 		},
 		// Change node and edge styles such as color and width.
 		// These properties are also set per node with dollar prefixed data-properties in the JSON structure.

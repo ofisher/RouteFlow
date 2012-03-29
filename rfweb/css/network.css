@@ -1,21 +1,30 @@
 @charset "UTF-8";
 
-#root {
+#topology {
+    width: 100%;
 }
 
 #infovis {
     height: 400px;
-    width: 78%;
-    background-color:#fff;
-    color:#ccc;
+    width: 75%;
+    background-color: #fff;
+    color: #ccc;
     border: 1px solid #F2F2F2;
-    display: inline-block;
+    float: left;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
 }
 
 #switchinfo {
-    width: 21%;
     vertical-align: top;
-    display: inline-block;
+    float: right;
+    width: 25%;
+}
+
+#switchinfo .section {
+    width: 100%;
+    padding: 0px;
 }
 
 #flows {
@@ -27,28 +36,15 @@
 }
 
 #flows table {
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
 }
 
-.text {
-    margin: 7px;
+ul.switchdesc {
+    list-style: none;
+    margin: 2px;
 }
 
-#inner-graph-details {
-    list-style:none;
-    margin:7px;
-}
-
-#log {
-    position:absolute;
-    top:10px;
-    font-size:1.0em;
-    font-weight:bold;
-    color:#23A4FF;
-}
-
-/*TOOLTIPS*/
+/* Tooltips */
 .tip {
     color: #111;
     width: 139px;
@@ -57,9 +53,7 @@
     -moz-box-shadow:#555 2px 2px 8px;
     -webkit-box-shadow:#555 2px 2px 8px;
     -o-box-shadow:#555 2px 2px 8px;
-    /*box-shadow:#555 2px 2px 8px;*/
     opacity:0.9;
-    /*filter:alpha(opacity=90);*/
     font-size:10px;
     font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
     padding:7px;
@@ -74,41 +68,15 @@
   margin-bottom:2px;
 }
 
-#routeflow-logo {
-    margin-right:300px;
-    z-index:2;
-    padding: 0px 0px 0px 25px;
+/* Colors from: http://colorschemedesigner.com/#2q408cku-w0w0 */
+.flow-new {
+    background-color: #C3E48C;
 }
 
-
-.table-row-header {
-    background-color: #145D80;
-    color: #FFFFFF;
-    width:100%;
-    font-weight: bold;
+.flow-kinda-new {
+    background-color: #F7DE98;
 }
 
-.table-row-content-not-selected {
-    background-color: #FFFFFF;
-    color: #000000;
-}
-
-.table-row-content-selected {
-    background-color: #145D80;
-    color: #000000;
-}
-
-.table-row-content-new {
-    background-color: #FFFF00;
-    color: #000000;
-}
-
-.table-row-content-not-so-new {
-    background-color: #AAAA00;
-    color: #000000;
-}
-
-.table-row-content-action-changed {
-    background-color: #77AA00;
-    color: #000000;
+.flow-action-changed {
+    background-color: #7276AB;
 }

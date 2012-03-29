@@ -2578,6 +2578,8 @@ function apply_template(template, data) {
 	
 
 
+
+
 	 The generated HTML will look like this
 	
 	 (start code xml)
@@ -8466,6 +8468,7 @@ function apply_template(template, data) {
 	});
 
 	/*
+
 	 * File: ForceDirected.js
 	 */
 

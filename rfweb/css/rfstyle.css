@@ -1,5 +1,5 @@
 /* Colors */
-.header {
+.header, .section_title {
     background-color: #2271af;
     color: #ffffff;
 }
@@ -38,30 +38,23 @@
     color: #000000;
 }
 
-/* Colors from: http://colorschemedesigner.com/#2q408cku-w0w0 */
-.flow-new {
-    background-color: #C3E48C;
-}
-
-.flow-kinda-new {
-    background-color: #F7DE98;
-}
-
-.flow-action-changed {
-    background-color: #7276AB;
-}
-
 /* Styles */
 body {
-    font-family: sans-serif;
     color: #363636;
     font-size: 11px;
     background: #FFFFFF url('../images/top-bg-new.png') no-repeat top center;
     background-size: 100%;
 }
 
-table {
+* {
     font-family: sans-serif;
+}
+
+.ui-tabs .ui-tabs-panel {
+    padding-top: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 5px;
 }
 
 .header {
@@ -73,16 +66,8 @@ table {
     padding-right: 4px;
 }
 
-#entries {
-    width: 400px;
-}
-
 .hidden_msg_content {
     display: none;
-}
-
-.msg_content {
-    display: "";
 }
 
 .message_content {
@@ -90,9 +75,22 @@ table {
     padding-left: 10px;
 }
 
+/* Main */
+#topnav {
+    padding: 16px;
+}
+
+#topnav * {
+    display: inline-block;
+}
+
+#routeflow-logo {
+    margin-left: 40px;
+}
+
+/* Section */
 .section {
     vertical-align: top;
-    display: inline-block;
     padding: 12px;
 }
 
@@ -104,9 +102,11 @@ table {
     font-size: 1.2em;
     font-family: sans-serif;
     font-weight: bold;
+    text-align: center;
     margin-bottom: 5px;
 }
 
+/* Subsection */
 .subsection {
     margin-bottom: 15px;
 }
@@ -128,18 +128,7 @@ table {
     padding-left: 5px;
 }
 
-#control {
-    height: 100%;
-}
-
-#topnav {
-    padding: 20px;
-}
-
-#topnav * {
-    display: inline-block;
-}
-
+/* Links */
 #links {
     float: right;
 }
@@ -152,19 +141,6 @@ table {
     text-decoration: underline;
 }
 
-#flows {
-    width: 100%;
-}
-
-#flows table {
-    width: 100%;
-}
-
-ul.switchdesc {
-    list-style: none;
-    margin: 2px;
-}
-
 /* RFTable */
 #rftable_section {
     width: 100%;
@@ -173,4 +149,13 @@ ul.switchdesc {
 #rftable {
     margin-left: auto;
     margin-right: auto;
+}
+
+/* RFMessages */
+#control {
+    float: left;
+}
+
+#channels .section {
+    display: inline-block;
 }

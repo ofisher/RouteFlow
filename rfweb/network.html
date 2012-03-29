@@ -4,21 +4,21 @@
 <script language="javascript" type="text/javascript" src="js/rf/rfnetwork.js" />
 
 <div id="root">
-            <div id="infovis"></div>
-            
-            <div id="switchinfo">
-				<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"> 
-					<p>
-					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					Select a switch to display its information, statistics and flow table.
-					</p>
-				</div>
-            </div>
+            <div id="topology">
+                <div id="infovis"></div>
                 
+                <div id="switchinfo">
+				    <div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"> 
+					    <p>
+					    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+					    Select a switch to display its information, statistics and flow table.
+					    </p>
+				    </div>
+                </div>
+            </div>
+            
             <div id="flows">
             </div>
-            
-            <div id="log"></div>
 </div>
 
 <script> graph_init(); </script>

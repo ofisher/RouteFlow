@@ -165,6 +165,8 @@ No instructions yet.
 - RF-Controller randomly (and somewhat rarely) segfaults without any clear 
   reason.
 
+- When closing rftest1 and rftest2, RF-Controller segfaults to no effect.
+
 - See: http://bugs.openflowhub.org/browse/ROUTEFLOW
 
 

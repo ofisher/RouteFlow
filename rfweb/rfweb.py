@@ -130,11 +130,16 @@ def application(env, start_response):
             f.close()
         else:
             status = 200
-            rbody = "GET /rftable: RouteFlow table\n" \
+            rbody = "JSON requests:\n" \
+                    "GET /rftable: RouteFlow table\n" \
                     "GET /switchs/[id]/stats: stats for switch [id]\n" \
                     "GET /switchs/[id]/flowtable: flowtable for switch [id]\n" \
-                    "GET messages/[channel]: messages in channel [channel]\n"
-    
+                    "GET messages/[channel]: messages in channel [channel]\n" \
+                    "\n" \
+                    "Pages:\n" \
+                    "/index.html: main page\n" \
+                    "/rfgraph.html: new network graph (testing, unstable)\n"
+                    
     if ctype == JSON and callback is not None:
         rbody = "{0}({1})".format(callback, rbody)
         
