@@ -1,7 +1,7 @@
-<link href="css/network.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="css/network.css" rel="stylesheet" />
 
-<script language="javascript" type="text/javascript" src="js/jit/jit_mod.js" />
-<script language="javascript" type="text/javascript" src="js/rf/rfnetwork.js" />
+<script language="javascript" type="text/javascript" src="js/jit/jit.js"></script>
+<script language="javascript" type="text/javascript" src="js/rf/rfgraph.js"></script>
 
 <div id="root">
             <div id="topology">
@@ -11,7 +11,9 @@
 				    <div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"> 
 					    <p>
 					    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					    Select a switch to display its information, statistics and flow table.
+					    Left click a switch node to show its properties.<br />
+					    Right click any node to centralize it.<br />
+					    You can also drag nodes to move them.<br />
 					    </p>
 				    </div>
                 </div>
@@ -21,4 +23,4 @@
             </div>
 </div>
 
-<script> graph_init(); </script>
+<script> init(); </script>
