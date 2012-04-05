@@ -2,28 +2,29 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<link type="text/css" href="css/rftheme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
-<link type="text/css" href="css/rfstyle.css" rel="stylesheet" />	
+    <meta charset="utf-8">
 
-<script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
-<script src="js/rf/utils.js"></script>
+    <link type="text/css" href="css/style.css" rel="stylesheet" />
+    <link type="text/css" href="css/rftheme/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
 
-<script>
-$(function() {
-	$("#tabs").tabs({
-		ajaxOptions: {
-			error: function(xhr, status, index, anchor) {
-				$(anchor.hash).html("Error loading tab.");
-			}
-		}
-	});
+    <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
+    <script src="js/rf/utils.js"></script>
+
+    <script>
+    $(function() {
+	    $("#tabs").tabs({
+		    ajaxOptions: {
+			    error: function(xhr, status, index, anchor) {
+				    $(anchor.hash).html("Error loading tab.");
+			    }
+		    }
+	    });
 	
-	$("#about").dialog({ autoOpen: false });
-	$("#support").dialog({ autoOpen: false });
-});
-</script>
+	    $("#about").dialog({ autoOpen: false });
+	    $("#support").dialog({ autoOpen: false });
+    });
+    </script>
 </head>
 
 <body>
@@ -46,7 +47,7 @@ $(function() {
 <div id="tabs">
 	<ul>
 		<li><a href="network.html">Network</a></li>
-		<li><a href="rfmsgs.html">Messages</a></li>
+		<li><a href="messages.html">Messages</a></li>
 		<li><a href="rftable.html">Table</a></li>
 	</ul>
 </div>
@@ -58,7 +59,7 @@ $(function() {
 </div>
 
 <div id="support" title="Support">
-    Put support info here.
+See <a href="https://groups.google.com/group/routeflow-discuss/topics">RouteFlow Discuss</a>.
 </div>
 
 

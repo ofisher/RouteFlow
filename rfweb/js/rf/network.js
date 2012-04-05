@@ -1,11 +1,23 @@
-var labelType, useGradients, nativeTextSupport, animate;
-
-ICON_SIZE = 64;
+ICON_SIZE = 128;
 LABEL_SIZE = 12;
 SPACING = 12;
 
-RFSWITCH_ICON = new Image();
-RFSWITCH_ICON.src = 'images/eth.png';
+SWITCH_ICON = new Image();
+SWITCH_ICON.src = 'images/icons/switch.png';
+
+RFSERVER_ICON = new Image();
+RFSERVER_ICON.src = 'images/icons/server_a.png';
+
+RFCONTROLLER_ICON = new Image();
+RFCONTROLLER_ICON.src = 'images/icons/server_b.png';
+
+var labelType, useGradients, nativeTextSupport, animate;
+var rgraph = undefined;
+var switches_info;
+var tableMatches = {};
+var previous_pos = {};
+var selected_node = undefined;
+var interval_id;
 
 (function() {
   var ua = navigator.userAgent,
@@ -21,23 +33,27 @@ RFSWITCH_ICON.src = 'images/eth.png';
   useGradients = nativeCanvasSupport;
   animate = !(iStuff || !nativeCanvasSupport);
 })();
-            
+   
 $jit.RGraph.Plot.NodeTypes.implement({
     'of-switch': {
         'render': function(node, canvas) {
             var pos = node.pos.getc(true);
-            canvas.getCtx().drawImage(RFSWITCH_ICON, pos.x - ICON_SIZE/2, pos.y - ICON_SIZE/2, ICON_SIZE, ICON_SIZE);
+            canvas.getCtx().drawImage(SWITCH_ICON, 
+                                      0, ICON_SIZE/2.5,             // sx, sy
+                                      ICON_SIZE, ICON_SIZE/5,       // sWidth, sHeight
+                                      pos.x - ICON_SIZE/2, pos.y - (ICON_SIZE/5)/2, // dx, dy
+                                      ICON_SIZE, ICON_SIZE/5);      // dWidth, dHeight
         },
         
         'contains': function (node, pos) {
             return this.nodeHelper.rectangle.contains(node.pos.getc(true), pos, ICON_SIZE, ICON_SIZE);
-        }
+        },
     },
     
     'rf-server': {
         'render': function(node, canvas) {
             var pos = node.pos.getc(true);
-            canvas.getCtx().drawImage(RFSWITCH_ICON, pos.x - ICON_SIZE/2, pos.y - ICON_SIZE/2, ICON_SIZE, ICON_SIZE);
+            canvas.getCtx().drawImage(RFSERVER_ICON, pos.x - ICON_SIZE/2, pos.y - ICON_SIZE/2, ICON_SIZE, ICON_SIZE);
         },
         
         'contains': function (node, pos) {
@@ -48,7 +64,7 @@ $jit.RGraph.Plot.NodeTypes.implement({
     'controller': {
         'render': function(node, canvas) {
             var pos = node.pos.getc(true);
-            canvas.getCtx().drawImage(RFSWITCH_ICON, pos.x - ICON_SIZE/2, pos.y - ICON_SIZE/2, ICON_SIZE, ICON_SIZE);
+            canvas.getCtx().drawImage(RFCONTROLLER_ICON, pos.x - ICON_SIZE/2, pos.y - ICON_SIZE/2, ICON_SIZE, ICON_SIZE);
         },
         
         'contains': function (node, pos) {
@@ -57,7 +73,7 @@ $jit.RGraph.Plot.NodeTypes.implement({
     },
 });
 
-function show_info(graph, node) {
+function show_info(node) {
     var contMatch = new Array();
     var contActions = new Array();
     var flowsActions = new Array();
@@ -192,19 +208,11 @@ function show_info(graph, node) {
 	}
 }
 
-var rgraph = undefined;
-var switches_info;
-var old_nodes;
-var old_topology = {};
-var current_topology;
-var interval_id;
-var tableMatches = {};
-
-function start_updating() {
-    interval_id = setInterval("update()", 1000);
+function network_start_updating() {
+    interval_id = setInterval("network_update()", 1000);
 }
 
-function stop_updating() {
+function network_stop_updating() {
     clearInterval(interval_id);
 }
 
@@ -212,9 +220,7 @@ function build() {
     rgraph = new $jit.RGraph({
       'injectInto': 'infovis',
         Node: {
-            'type': 'rfswitch',
             'overridable': true,
-            'color': '#cc0000',
             'height': ICON_SIZE + SPACING + LABEL_SIZE,
         },
 
@@ -229,6 +235,7 @@ function build() {
           zooming: 100,
         },
 
+        // If you change style here, change .label in network.css too.
         Label: {  
             overridable: false,  
             type: labelType,
@@ -243,36 +250,41 @@ function build() {
         transition: $jit.Trans.linear,
         duration: 250,
         fps: 30,
-        levelDistance: 200,
+        levelDistance: 250,
         
         Events: {
             enable: true,
             type: 'Native',
 
             onDragMove: function(node, eventInfo, e) {
-                stop_updating();
+                network_stop_updating();
                 var pos = eventInfo.getPos();
                 node.pos.setc(pos.x, pos.y);
                 rgraph.plot();
-                start_updating();
             },
 
+            onDragEnd: function(node, eventInfo, e) {
+                network_start_updating();
+            },
+            
             onClick: function(node, eventInfo, e) {
                 if (node) {
-                    show_info(rgraph, node);
+                    selected_node = node.id;
+                    show_info(node);
                 }
             },
 
             onRightClick: function(node, eventInfo, e) {
                 if (node) {
-                    stop_updating();
-                    old_topology = {};
+                    network_stop_updating();
+                    previous_pos = {};
                     rgraph.onClick(node.id, { hideLabels: false });
-                    start_updating();
+                    network_start_updating();
                 }
             },
         },
 
+        // HTML labels for compatibility
         onCreateLabel: function(domElement, node){
             domElement.innerHTML = node.name;
             domElement.setAttribute("class", "label");
@@ -286,34 +298,50 @@ function build() {
             style.left = (left - w / 2) + 'px';
             style.top = top + (ICON_SIZE/2) + 'px';
         },
-
-        
     });
 }
 
-function update() {
+function network_update() {
     $.getJSON("data/topology.json",
         function(data) {
-            if (rgraph == undefined) {
-                build();
-                rgraph.canvas.scale(0.8, 0.8);
+            if (data == null || data == undefined)
+                return;
+                
+            // Pre-process data
+            for (node in data["nodes"]) {
+                if (data["nodes"][node]["data"]["$type"] == "of-switch")
+                    data["nodes"][node]["data"]["$height"] = ICON_SIZE/5 + SPACING + LABEL_SIZE;
             }
             
+            // If the graph hasn't been built yet, build it
+            if (rgraph == undefined) {
+                build();
+                rgraph.loadJSON(data["nodes"], 1);
+                rgraph.refresh();
+                rgraph.canvas.scale(0.7, 0.7);
+                return;
+            }
+
             // Save old node positions
             rgraph.graph.eachNode(function(node) {
-                old_topology[node.id] = node.getPos();
+                previous_pos[node.id] = node.getPos();
             });
             
             // Update
-            rgraph.loadJSON(data["nodes"], 1);
+            rgraph.loadJSON(data["nodes"]);
             rgraph.refresh();
             
             // Restore old positions
             rgraph.graph.eachNode(function(node) {
-                if (node.id in old_topology)
-                    node.setPos(old_topology[node.id]);
+                if (node.id in previous_pos) {
+                    node.setPos(previous_pos[node.id]);
+                }
             });
             rgraph.plot();
+            
+            if (selected_node != undefined) {
+                show_info(rgraph.graph.getNode(selected_node));
+            }
     });
     
     $.getJSON("data/switchstats.json",
@@ -322,7 +350,7 @@ function update() {
     });
 }
 
-function init() {
-    update();
-    start_updating();
+function network_init() {
+    network_start_updating();
+    network_update();
 }

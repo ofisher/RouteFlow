@@ -1,4 +1,3 @@
-<script type="text/javascript">
 SLAVE_SERVER = 0
 SERVER_CONTROLLER = 1
 
@@ -87,8 +86,12 @@ function process_message(i, msgprefix, msg) {
         msg["status"] = "unread"
         
     var content = "";
-    for (var attr in msg["content"])
-        content += attr + ": " + msg["content"][attr] + "<br />";
+    for (var attr in msg["content"]) {
+        if (attr.match(/_id$/))
+            content += attr + ": " + toHex(parseInt(msg["content"][attr]), 64) + "<br />";
+        else
+            content += attr + ": " + msg["content"][attr] + "<br />";
+    }
     msg["content"] = content;
     msg["style"] = i % 2;
 }
@@ -155,52 +158,3 @@ function start() {
     
     $('input[name=types]').click(function() { update(); });
 }
-</script>
-
-<div class="section" id="control">
-    <div class="section_title">Filters</div>
-    <div class="subsection">
-        By message type:
-        <div class="subsection_title">Slave &harr; Server</div>
-        <div id="ss_type_filters"></div>
-        
-        <div class="subsection_title">Server &harr; Controller</div>
-        <div id="sc_type_filters"></div>
-    </div>
-</div>
-
-<div id="channels">
-    <div class="section" id="slave_server_channel">
-        <div class="section_title">Slave &harr; Server</div>
-        <table>
-            <thead>
-                <tr class="header">
-                    <td class="expand_control_header"></td>
-                    <td>To</td>
-                    <td>Status</td>
-                    <td>Type</td>
-                </tr>
-            </thead>
-            
-            <tbody id="slave_server"></tbody>
-        </table>
-    </div>
-
-    <div class="section" id="server_controller_channel">
-        <div class="section_title">Server &harr; Controller</div>
-        <table>
-            <thead>
-                <tr class="header">
-                    <td class="expand_control_header"></td>
-                    <td>To</td>
-                    <td>Status</td>
-                    <td>Type</td>
-                </tr>
-            </thead>
-            
-            <tbody id="server_controller"></tbody>
-        </table>
-    </div>
-</div>
-
-<script> start(); update(); </script>

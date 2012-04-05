@@ -1,26 +1,20 @@
-<link type="text/css" href="css/network.css" rel="stylesheet" />
-
 <script language="javascript" type="text/javascript" src="js/jit/jit.js"></script>
-<script language="javascript" type="text/javascript" src="js/rf/rfgraph.js"></script>
+<script language="javascript" type="text/javascript" src="js/rf/network.js"></script>
 
-<div id="root">
-            <div id="topology">
-                <div id="infovis"></div>
-                
-                <div id="switchinfo">
-				    <div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"> 
-					    <p>
-					    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					    Left click a switch node to show its properties.<br />
-					    Right click any node to centralize it.<br />
-					    You can also drag nodes to move them.<br />
-					    </p>
-				    </div>
-                </div>
-            </div>
-            
-            <div id="flows">
-            </div>
+<div id="topology">
+    <div id="infovis"></div>
+
+    <div id="switchinfo">
+        <div class="tips">
+        The graph represents the current state of the RouteFlow network.
+        <ul>
+        <li><strong>Left click</strong> a node to show its <strong>properties</strong>.</li>
+        <li><strong>Right click</strong> a node to <strong>centralize</strong> it.</li>
+        <li>You can also <strong>drag nodes to move</strong> them.</li>
+        </ul>
+    </div>
 </div>
 
-<script> init(); </script>
+<div id="flows"></div>
+
+<script> network_init(); </script>
