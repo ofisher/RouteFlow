@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+# WARNING: this web server is terrible and should not be used for anything other
+# than testing RouteFlow.
+# TODO: make a decent web server.
+
 from wsgiref.simple_server import make_server
 from cgi import parse_qs, escape
 import json
