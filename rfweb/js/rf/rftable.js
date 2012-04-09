@@ -15,7 +15,7 @@ function process_entry(i, msg) {
     msg["style"] = i % 2;
 }
 
-function update() {
+function rftable_init() {
     var table = document.getElementById("rftable");
     $.ajax({
         url: "/rftable",
@@ -28,4 +28,7 @@ function update() {
             }
         }
     });
+}
+
+function rftable_stop() {
 }

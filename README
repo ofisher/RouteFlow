@@ -162,10 +162,15 @@ No instructions yet.
 
 
 === Known Bugs ===
-- RF-Controller randomly (and somewhat rarely) segfaults without any clear 
-  reason.
+- rfcontroller: random (and somewhat rare) segfaults without any clear reason.
 
-- When closing rftest1 and rftest2, RF-Controller segfaults to no effect.
+- rftest*: When closing the tests, RF-Controller segfaults to no effect.
+
+- rfweb: topology monitoring for rftest1 doesn't work
+
+- rfweb: topology monitoring shows switch8 as active when all switches are down
+
+- rfweb: flows colors are not shown correctly
 
 - See: http://bugs.openflowhub.org/browse/ROUTEFLOW
 

@@ -354,3 +354,7 @@ function network_init() {
     network_start_updating();
     network_update();
 }
+
+function network_stop() {
+	network_stop_updating();
+}

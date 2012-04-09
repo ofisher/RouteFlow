@@ -158,3 +158,11 @@ function start() {
     
     $('input[name=types]').click(function() { update(); });
 }
+
+function messages_init() {
+	start();
+	update(); 
+}
+
+function messages_stop() {
+}
