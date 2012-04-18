@@ -1,19 +1,19 @@
 #!/bin/bash
 
-LXC_HOME=/var/lib/lxc
-RF_HOME=$HOME/RouteFlow-New-Architecture
-LOG_FILE=/var/log/rf-first-network.log
-
 if [ "$EUID" != "0" ]; then
-  echo "You must be root to run that. Sorry, dude!"
+  echo "You must be root to run this script. Sorry, dude!"
   exit 1
 fi
+
+LXCDIR=/var/lib/lxc
+RF_HOME=..
+LOG_FILE=/var/log/rftest1.log
 
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 cd $RF_HOME &> $LOG_FILE
 
 echo "Reseting and stopping LXC VMs..."
-rm -f $LXC_HOME/{rfvm1,b1,b2}/rootfs/var/run/network/ifstate &>> $LOG_FILE
+rm -f $LXCDIR/{rfvm1,b1,b2}/rootfs/var/run/network/ifstate &>> $LOG_FILE
 lxc-stop -n b2 &>> $LOG_FILE
 lxc-stop -n b1 &>> $LOG_FILE
 lxc-stop -n rfvm1 &>> $LOG_FILE

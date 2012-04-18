@@ -30,7 +30,7 @@ responsible for detecting changes in the linux ARP and routing tables.
 When a change is detected (via netlink events) messages are sent to the server.
 
 - rfserver is a standalone application that manages the VMs running the 
-RF-Slave daemons. The RF-Server keeps the mapping between the RF-Slave VM 
+RFClient daemons. The RFServer keeps the mapping between the RFClient VM 
 instances and the corresponding switches and their datapaths. It connects to 
 the rfproxy to instruct it about when to configure flows and also to 
 configure the Open vSwitch to maintain the connectivity in the virtual 
@@ -38,7 +38,7 @@ environment formed by the set of registered VMs.
 
 - rfproxy is a NOX (OpenFlow controller) application responsible for the 
 interactions with the OpenFlow switches (identified by datapaths) via the 
-OpenFlow protocol. It listens to instructions from the RF-Server and also 
+OpenFlow protocol. It listens to instructions from the RFServer and also 
 notifies whenever a switch joins or leavens the network.
 
 There is also a library (rflib) of common functions to all three applications. 
@@ -126,12 +126,15 @@ $ sudo apt-get install git-core build-essential scons libboost-dev
   libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev 
   python-pip
 
-2) There's a small conflict with a constant name in NOX and MongoDB. It has
+3) Download MongoDB v2.0.4:
+http://downloads.mongodb.org/src/mongodb-src-r2.0.4.tar.gz
+
+3) There's a conflict with a constant name in NOX and MongoDB. It has
 been fixed, but is not part of version 2.0.4 yet. So, we need to fix it 
 applying the changes listed in this commit:
 https://github.com/mongodb/mongo/commit/a1e68969d48bbb47c893870f6428048a602faf90
 
-3) Then compile and install MongoDB:
+4) Then compile and install MongoDB:
 $ scons all
 $ sudo scons --full install --prefix=/usr --sharedclient
 $ sudo pip install pymongo
@@ -149,8 +152,8 @@ in the project root:
 $ make all
 
 You can also compile them individually:
-$ make slave
-$ make server
+$ make rfclient
+$ make rfserver
 $ make nox
 
 4) That's it, everything is installed! After the build, you can run tests 1 and 
@@ -158,7 +161,33 @@ $ make nox
 
 
 === Running ===
-No instructions yet.
+The folder rftest contains all that is needed to create and run two test cases.
+
+First, create the LXC containers that will run as virtual machines:
+   $ sudo ./create
+
+Test 1
+   $ sudo ./rftest1
+
+   For more details on this test, see: 
+   http://sites.google.com/site/routeflow/documents/first-routeflow
+   
+   You can then log in to the LXC container b1 and try to ping b2:
+   $ sudo lxc-console -n b1
+   And inside b1:
+   # ping 172.31.2.2
+   
+   To stop running:
+   $ sudo ./rftest1 clear
+
+Test 2
+   $ sudo ./rftest2
+  
+   To stop running:
+   $ sudo ./rftest2 clear
+   
+   For more details on this test, see: 
+   http://sites.google.com/site/routeflow/documents/tutorial2-four-routers-with-ospf
 
 
 === Known Bugs ===
@@ -170,7 +199,7 @@ No instructions yet.
 
 - rfweb: topology monitoring shows switch8 as active when all switches are down
 
-- rfweb: flows colors are not shown correctly
+- rfweb: flow colors are not shown correctly
 
 - See: http://bugs.openflowhub.org/browse/ROUTEFLOW
 
@@ -195,14 +224,14 @@ No instructions yet.
 - Properly separate rflib and implement it in other languages, allowing for 
   applications to be built for other controllers.
 
-- Create headers for RFSlave.cc and RFServer.cc.
+- Create headers for RFClient.cc and RFServer.cc.
 
-- Let the (RF-Server order the) RF-Slave set the VM's non-administrative 
+- Let the (RFServer order the) RFClient set the VM's non-administrative 
   interfaces to the same MAC Address. 
 
-- Create a verbose mode for RF-Server.
+- Create a verbose mode for RFServer.
 
-- Configuration arguments for RF-Server.
+- Configuration arguments for RFServer.
 
 - Wireshark dissector plugin for the RouteFlow protocol
 
@@ -217,7 +246,7 @@ No instructions yet.
 - Libvirt: Virtualization-independence to accomodate alternative virtualization 
   environments via unified virtualization API provided by libvirt
     - provide on-demand start-up of VMs via libvirt upon interactions (e.g. CLI) 
-      with RF-Server)
+      with RFServer)
 
 - Routing Protocol Optimization: 
     - Separate topology discovery and maintenance from state distribution
@@ -232,10 +261,6 @@ No instructions yet.
     - Physically distribute the virtualization environment via mutliple OVS 
       providing the connectivity of the virtual control network
     - Improve resiliency: Have a "stand-by" environment to take over in case of 
-      failure of the master RF-Server / Virtualized Control Plane 
-
-- Rename "nox" target to "controller" in Makefile.
-
-- Name modules and applications more uniformly (rf*, not rf-*).
+      failure of the master RFServer / Virtualized Control Plane 
 
 - For smaller changes, see TODO markings in the files.
