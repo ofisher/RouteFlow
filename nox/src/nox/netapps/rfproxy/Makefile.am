@@ -8,17 +8,17 @@ AM_CPPFLAGS += $(PYTHON_CPPFLAGS)
 endif # PY_ENABLED 
 
 pkglib_LTLIBRARIES =\
-	routeflowc.la
+	rfproxy.la
 
-routeflowc_la_CPPFLAGS = $(AM_CPPFLAGS) -I $(top_srcdir)/src/nox -I $(top_srcdir)/src/nox/netapps/ \
+rfproxy_la_CPPFLAGS = $(AM_CPPFLAGS) -I $(top_srcdir)/src/nox -I $(top_srcdir)/src/nox/netapps/ \
                         -I$(top_srcdir)/../common/ipc \
                         -I$(top_srcdir)/../common/utils \
 			            -I$(top_srcdir)/../common/openflow \
                         -I$(top_srcdir)/../common/rftable
                         
-routeflowc_la_SOURCES = routeflowc.hh routeflowc.cc
-routeflowc_la_LIBADD = $(top_srcdir)/../build/lib/libipc.a $(top_srcdir)/../build/lib/librftable.a $(top_srcdir)/../build/lib/libutils.a 
-routeflowc_la_LDFLAGS = -module -export-dynamic -lmongoclient
+rfproxy_la_SOURCES = rfproxy.hh rfproxy.cc
+rfproxy_la_LIBADD = $(top_srcdir)/../build/lib/libipc.a $(top_srcdir)/../build/lib/librftable.a $(top_srcdir)/../build/lib/libutils.a 
+rfproxy_la_LDFLAGS = -module -export-dynamic -lmongoclient
 
 NOX_RUNTIMEFILES = meta.json	
 

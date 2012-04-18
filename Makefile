@@ -2,7 +2,7 @@
 export ROOT_DIR=$(CURDIR)
 export BUILD_DIR=$(ROOT_DIR)/build
 export IPC_DIR=$(ROOT_DIR)/common
-export RFC_DIR=$(ROOT_DIR)/rf-controller
+export RFC_DIR=$(ROOT_DIR)/nox
 export MONGO_DIR=/usr/local/include/mongo
 
 export BUILD_LIB_DIR=$(BUILD_DIR)/lib
@@ -10,7 +10,7 @@ export BUILD_OBJ_DIR=$(BUILD_DIR)/obj
 
 #the lib subdirs should be done first
 export libdirs := ipc utils rftable
-export srcdirs := rf-server rf-slave
+export srcdirs := rfserver rfclient
 
 export CPP := g++
 export CFLAGS := -Wall -W
@@ -41,18 +41,18 @@ app: lib
 		echo "done."; \
 	done
 
-server: lib
+rfserver: lib
 	@mkdir -p $(BUILD_OBJ_DIR);
-	@for dir in "rf-server"; do \
+	@for dir in "rfserver"; do \
 		mkdir -p $(BUILD_OBJ_DIR)/$$dir; \
 		echo "Compiling Application $$dir..."; \
 		make -C $(ROOT_DIR)/$$dir all; \
 		echo "done."; \
 	done
 	
-slave: lib 
+rfclient: lib 
 	@mkdir -p $(BUILD_OBJ_DIR);
-	@for dir in "rf-slave" ; do \
+	@for dir in "rfclient" ; do \
 		mkdir -p $(BUILD_OBJ_DIR)/$$dir; \
 		echo "Compiling Application $$dir..."; \
 		make -C $(ROOT_DIR)/$$dir all; \
@@ -60,7 +60,7 @@ slave: lib
 	done
 	
 nox: lib
-	echo "Building NOX and RF-Controller..."
+	echo "Building NOX and rfproxy application..."
 	cd $(RFC_DIR); \
 	./boot.sh; \
 	mkdir build; \

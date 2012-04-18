@@ -18,13 +18,13 @@ lxc-stop -n b2 &>> $LOG_FILE
 lxc-stop -n b1 &>> $LOG_FILE
 lxc-stop -n rfvm1 &>> $LOG_FILE
 
-echo "Stopping any running instances and data of rf-server, NOX, OVS and MongoDB..."
-pkill -15 rf-server &> /dev/null
+echo "Stopping any running instances and data of rfserver, NOX, OVS and MongoDB..."
+pkill -15 rfserver &> /dev/null
 pkill -15 lt-nox_core &> /dev/null
 pkill -15 ovs-openflowd &> /dev/null
 pkill -15 mongod &> /dev/null
 rm -r $HOME/db &>> $LOG_FILE
-rm -r /var/lib/lxc/rfvm1/rootfs/opt/rf-slave
+rm -r /var/lib/lxc/rfvm1/rootfs/opt/rfclient
 
 if [ "$1" != "clear" ]; then
     echo "Starting MongoDB..."
@@ -33,31 +33,31 @@ if [ "$1" != "clear" ]; then
     sleep 5
 
     echo "Starting the rfvm1 virtual machine..."
-    mkdir /var/lib/lxc/rfvm1/rootfs/opt/rf-slave &>> $LOG_FILE
-    cp build/rf-slave /var/lib/lxc/rfvm1/rootfs/opt/rf-slave/rf-slave &>> $LOG_FILE
+    mkdir /var/lib/lxc/rfvm1/rootfs/opt/rfclient &>> $LOG_FILE
+    cp build/rfclient /var/lib/lxc/rfvm1/rootfs/opt/rfclient/rfclient &>> $LOG_FILE
     cp /usr/lib/libmongoclient.a /var/lib/lxc/rfvm1/rootfs/usr/lib &>> $LOG_FILE
     cp /usr/lib/libmongoclient.so /var/lib/lxc/rfvm1/rootfs/usr/lib &>> $LOG_FILE
     
-    echo "#!/bin/sh" > /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
-    echo "sleep 5" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
-    echo "/opt/rf-slave/rf-slave > /var/log/rf-slave.log" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
-    chmod +x /var/lib/lxc/rfvm1/rootfs/root/run_rfslave.sh
+    echo "#!/bin/sh" > /var/lib/lxc/rfvm1/rootfs/root/run_rfclient.sh
+    echo "sleep 5" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfclient.sh
+    echo "/opt/rfclient/rfclient > /var/log/rfclient.log" >> /var/lib/lxc/rfvm1/rootfs/root/run_rfclient.sh
+    chmod +x /var/lib/lxc/rfvm1/rootfs/root/run_rfclient.sh
     
     lxc-start -n rfvm1 -d &>> $LOG_FILE
     
     echo "Starting the management network (br0)..."
-    ( cd rf-controller/build/src && ./nox_core -v -i ptcp:6363 switch -d ) &>> $LOG_FILE
+    ( cd nox/build/src && ./nox_core -v -i ptcp:6363 switch -d ) &>> $LOG_FILE
     sleep 3
     ovs-openflowd br0 tcp:127.0.0.1:6363 --out-of-band --detach --ports=rfvm1.0 &>> $LOG_FILE
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
     echo "Starting NOX and the RouteFlow network controller..."
-    ( cd rf-controller/build/src && ./nox_core -i ptcp:6633 routeflowc --verbose="routeflowc:ANY:INFO" &>> $LOG_FILE & )
+    ( cd nox/build/src && ./nox_core -i ptcp:6633 rfproxy --verbose="rfproxy:ANY:INFO" &>> $LOG_FILE & )
     sleep 5
     
     echo "Starting the RouteFlow server..."
-    build/rf-server &>> $LOG_FILE &
+    build/rfserver &>> $LOG_FILE &
     sleep 3
     
     echo "Starting the control plane network (dp0 OVS)..."

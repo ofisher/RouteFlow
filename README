@@ -22,21 +22,21 @@ licenses.
 
 
 === Overview ===
-RouteFlow is made of three basic applications: rf-slave, rf-server and 
-rf-controller.
+RouteFlow is made of three basic applications: rfclient, rfserver and 
+rfproxy.
 
-- RF-Slave is the module running as a daemon in the Virtual Machine (VM) 
+- rfclient is the module running as a daemon in the Virtual Machine (VM) 
 responsible for detecting changes in the linux ARP and routing tables. 
 When a change is detected (via netlink events) messages are sent to the server.
 
-- RF-Server is a standalone application that manages the VMs running the 
+- rfserver is a standalone application that manages the VMs running the 
 RF-Slave daemons. The RF-Server keeps the mapping between the RF-Slave VM 
 instances and the corresponding switches and their datapaths. It connects to 
-the RF-Controller to instruct it about when to configure flows and also to 
+the rfproxy to instruct it about when to configure flows and also to 
 configure the Open vSwitch to maintain the connectivity in the virtual 
 environment formed by the set of registered VMs.
 
-- RF-Controller is a NOX (OpenFlow controller) application responsible for the 
+- rfproxy is a NOX (OpenFlow controller) application responsible for the 
 interactions with the OpenFlow switches (identified by datapaths) via the 
 OpenFlow protocol. It listens to instructions from the RF-Server and also 
 notifies whenever a switch joins or leavens the network.
@@ -50,19 +50,19 @@ Additionally, there are two extra modules: rfweb, an web interface for
 RouteFlow and jsonflowagent, an SNMP agent.
 
 +--------VM---------+
-| Quagga | RF-Slave |
+| Quagga | rfclient |
 +-------------------+
          \
 M:1      \ RFProtocol
          \
 +-------------------+
-|     RF-Server     |
+|     rfserver      |
 +-------------------+
          \
 1:1      \ RFProtocol
          \
 +-------------------+
-|   RF-Controller   |
+|      rfproxy      |
 |-------------------|
 |        NOX        |
 +-------------------+
@@ -162,9 +162,9 @@ No instructions yet.
 
 
 === Known Bugs ===
-- rfcontroller: random (and somewhat rare) segfaults without any clear reason.
+- rfproxy: random (and somewhat rare) segfaults without any clear reason.
 
-- rftest*: When closing the tests, RF-Controller segfaults to no effect.
+- rftest*: When closing the tests, rfproxy segfaults to no effect.
 
 - rfweb: topology monitoring for rftest1 doesn't work
 

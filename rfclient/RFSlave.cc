@@ -66,15 +66,15 @@ uint64_t get_vmId(const char *ifname) {
     return (dVmId > 0) ? dVmId : 0;
 }
 
-class RFSlave : private RFProtocolFactory, private IPCMessageProcessor {
+class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
     public:
-        RFSlave(const string &id, const string &address) {
+        RFClient(const string &id, const string &address) {
             this->id = id;
             this->gVmId = string_to<uint64_t>(this->id); // TODO: turn into id
             this->is_init = false;
             
             ipc = (IPCMessageService*) new MongoIPCMessageService(address, MONGO_DB_NAME, this->id);
-            syslog(LOG_INFO, "Creating slave id=%s", this->id.c_str());
+            syslog(LOG_INFO, "Creating client id=%s", this->id.c_str());
         }
 
         void start() {
@@ -376,9 +376,9 @@ int main(int argc, char* argv[]) {
         id = ss.str();
     }
 
-    openlog("rf-slave", LOG_NDELAY | LOG_NOWAIT | LOG_PID, SYSLOGFACILITY);
+    openlog("rfclient", LOG_NDELAY | LOG_NOWAIT | LOG_PID, SYSLOGFACILITY);
 
-    RFSlave s(id, address);
+    RFClient s(id, address);
     s.start();
 
     return 0;

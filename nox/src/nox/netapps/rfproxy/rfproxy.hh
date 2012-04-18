@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with NOX.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef routeflowc_HH
-#define routeflowc_HH
+#ifndef rfproxy_HH
+#define rfproxy_HH
 
 #include "component.hh"
 #include "config.h"
@@ -52,13 +52,13 @@ namespace vigil
 using namespace std;
 using namespace vigil::container;
 
-class routeflowc : public Component, private IPCMessageProcessor 
+class rfproxy : public Component, private IPCMessageProcessor 
 {
     public:
-        routeflowc(const Context* c, const json_object* node) : Component(c) {}
+        rfproxy(const Context* c, const json_object* node) : Component(c) {}
         void configure(const Configuration* c);
         void install();
-        static void getInstance(const container::Context* c, routeflowc*& component);
+        static void getInstance(const container::Context* c, rfproxy*& component);
 
     private:
         IPCMessageService* ipc;

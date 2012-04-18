@@ -3,7 +3,7 @@
 #include <boost/bind.hpp>
 #include <queue>
 
-#include "routeflowc.hh"
+#include "rfproxy.hh"
 #include "assert.hh"
 #include "component.hh"
 #include "vlog.hh"
@@ -32,15 +32,15 @@ queue<int> ports_num;
 
 namespace vigil {
 
-static Vlog_module lg("routeflowc");
+static Vlog_module lg("rfproxy");
 
 
-void routeflowc::configure(const Configuration* c)
+void rfproxy::configure(const Configuration* c)
 {
     lg.dbg(" Configure called ");
 }
 
-void routeflowc::install()
+void rfproxy::install()
 {
     rftable = new RFTable(MONGO_ADDRESS,MONGO_DB_NAME,RF_TABLE_NAME);
 
@@ -50,23 +50,23 @@ void routeflowc::install()
     ipc->listen(SERVER_CONTROLLER_CHANNEL, factory, this, false);
 
     register_handler<Packet_in_event>
-        (boost::bind(&routeflowc::handle_packet_in, this, _1));
+        (boost::bind(&rfproxy::handle_packet_in, this, _1));
     register_handler<Datapath_join_event>
-        (boost::bind(&routeflowc::handle_datapath_join, this, _1));
+        (boost::bind(&rfproxy::handle_datapath_join, this, _1));
     register_handler<Datapath_leave_event>
-        (boost::bind(&routeflowc::handle_datapath_leave, this, _1));
+        (boost::bind(&rfproxy::handle_datapath_leave, this, _1));
     register_handler<Desc_stats_in_event>
-        (boost::bind(&routeflowc::handle_desc_in, this, _1));
+        (boost::bind(&rfproxy::handle_desc_in, this, _1));
 }
 
-void routeflowc::getInstance(const Context* c, routeflowc*& component)
+void rfproxy::getInstance(const Context* c, rfproxy*& component)
 {
-    component = dynamic_cast<routeflowc*>
+    component = dynamic_cast<rfproxy*>
         (c->get_by_interface(container::Interface_description(
-            typeid(routeflowc).name())));
+            typeid(rfproxy).name())));
 }
 
-bool routeflowc::process(IPCMessage& msg) {
+bool rfproxy::process(IPCMessage& msg) {
     int type = msg.get_type();
     if (type == DATAPATH_CONFIG) {
         DatapathConfig *config = dynamic_cast<DatapathConfig*>(&msg);
@@ -120,7 +120,7 @@ bool routeflowc::process(IPCMessage& msg) {
     return true;
 }
 
-Disposition routeflowc::handle_datapath_join(const Event& e) {
+Disposition rfproxy::handle_datapath_join(const Event& e) {
     const Datapath_join_event& dj = assert_cast<const Datapath_join_event&> (e);
 
     ofp_stats_request* osr = NULL;
@@ -143,7 +143,7 @@ Disposition routeflowc::handle_datapath_join(const Event& e) {
 	return CONTINUE;
 }
 
-Disposition routeflowc::handle_datapath_leave(const Event& e) {
+Disposition rfproxy::handle_datapath_leave(const Event& e) {
     const Datapath_leave_event& dl = assert_cast<const Datapath_leave_event&> (e);
     DatapathLeave dlm(dl.datapath_id.as_host());
     ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, dlm);
@@ -153,7 +153,7 @@ Disposition routeflowc::handle_datapath_leave(const Event& e) {
     return CONTINUE;
 }
 
-Disposition routeflowc::handle_packet_in(const Event& e) {
+Disposition rfproxy::handle_packet_in(const Event& e) {
     const Packet_in_event& pi = assert_cast<const Packet_in_event&> (e);
 	Flow flow(pi.in_port, *pi.get_buffer());
 
@@ -297,7 +297,7 @@ Disposition routeflowc::handle_packet_in(const Event& e) {
     return CONTINUE;
 }
 
-Disposition routeflowc::handle_desc_in(const Event& e) {
+Disposition rfproxy::handle_desc_in(const Event& e) {
     const Desc_stats_in_event& ds = assert_cast<const Desc_stats_in_event&>(e);
     DatapathJoin msg(ds.datapath_id.as_host(), ports_num.front(), ds.hw_desc == RFVS_HWDESC);
     ports_num.pop();
@@ -308,5 +308,5 @@ Disposition routeflowc::handle_desc_in(const Event& e) {
     return CONTINUE;
 }
 
-REGISTER_COMPONENT(Simple_component_factory<routeflowc>, routeflowc);
+REGISTER_COMPONENT(Simple_component_factory<rfproxy>, rfproxy);
 } // vigil namespace
