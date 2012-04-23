@@ -10,13 +10,14 @@
 #include <vector>
 #include <boost/thread.hpp>
 
-#include "IPC.h"
-#include "MongoIPC.h"
-#include "RFProtocol.h"
-#include "RFProtocolFactory.h"
-#include "FlowTable.h"
+#include "ipc/IPC.h"
+#include "ipc/MongoIPC.h"
+#include "ipc/RFProtocol.h"
+#include "ipc/RFProtocolFactory.h"
 #include "defs.h"
 #include "converter.h"
+
+#include "FlowTable.h"
 
 #define BUFFER_SIZE 23 /* Mapping packet size. */
 #define ETH_P_RFP 0x0A0A /* RF protocol. */

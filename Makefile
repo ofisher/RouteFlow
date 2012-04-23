@@ -1,15 +1,16 @@
-
 export ROOT_DIR=$(CURDIR)
 export BUILD_DIR=$(ROOT_DIR)/build
-export IPC_DIR=$(ROOT_DIR)/common
+export LIB_DIR=$(ROOT_DIR)/rflib
 export RFC_DIR=$(ROOT_DIR)/nox
 export MONGO_DIR=/usr/local/include/mongo
 
 export BUILD_LIB_DIR=$(BUILD_DIR)/lib
 export BUILD_OBJ_DIR=$(BUILD_DIR)/obj
 
+export RFLIB_NAME=rflib
+
 #the lib subdirs should be done first
-export libdirs := ipc utils rftable
+export libdirs := ipc rftable types openflow
 export srcdirs := rfserver rfclient
 
 export CPP := g++
@@ -26,11 +27,12 @@ lib: build
 	@mkdir -p $(BUILD_LIB_DIR);
 	@for dir in $(libdirs); do \
 		mkdir -p $(BUILD_OBJ_DIR)/$$dir; \
-		echo "Compiling Library $$dir..."; \
-		make -C $(IPC_DIR)/$$dir all; \
-		rmdir $(BUILD_OBJ_DIR)/$$dir; \
+		echo "Compiling Library Dependency ($$dir)..."; \
+		make -C $(LIB_DIR)/$$dir all; \
 		echo "done."; \
 	done
+	@echo "Generating Library";
+	make -C $(LIB_DIR) all;
 
 app: lib
 	@mkdir -p $(BUILD_OBJ_DIR);
@@ -60,7 +62,7 @@ rfclient: lib
 	done
 	
 nox: lib
-	echo "Building NOX and rfproxy application..."
+	echo "Building NOX with rfproxy..."
 	cd $(RFC_DIR); \
 	./boot.sh; \
 	mkdir build; \
@@ -83,6 +85,9 @@ clean-nox:
 
 clean-libs:
 	@rm -rf $(BUILD_LIB_DIR)
+	@for dir in $(libdirs); do \
+		rm -rf $(BUILD_OBJ_DIR)/$$dir; \
+	done
 
 clean-apps_obj:
 	@rm -rf $(BUILD_OBJ_DIR)

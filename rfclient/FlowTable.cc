@@ -5,10 +5,11 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
-#include "FlowTable.h"
-#include "RFProtocol.h"
+#include "ipc/RFProtocol.h"
 #include "converter.h"
 #include "defs.h"
+
+#include "FlowTable.h"
                 
 using namespace std;
 

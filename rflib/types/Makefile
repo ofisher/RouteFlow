@@ -1,3 +1,5 @@
-MAKELIB=1
+LIBDEP=1
+
+PLIBS := 
 
 include ../../Make.rules

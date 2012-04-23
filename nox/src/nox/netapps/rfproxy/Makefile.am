@@ -11,13 +11,14 @@ pkglib_LTLIBRARIES =\
 	rfproxy.la
 
 rfproxy_la_CPPFLAGS = $(AM_CPPFLAGS) -I $(top_srcdir)/src/nox -I $(top_srcdir)/src/nox/netapps/ \
-                        -I$(top_srcdir)/../common/ipc \
-                        -I$(top_srcdir)/../common/utils \
-			            -I$(top_srcdir)/../common/openflow \
-                        -I$(top_srcdir)/../common/rftable
+                        -I$(top_srcdir)/../rflib \
+                        -I$(top_srcdir)/../rflib/ipc \
+                        -I$(top_srcdir)/../rflib/rftable \
+                        -I$(top_srcdir)/../rflib/openflow \
+                        -I$(top_srcdir)/../rflib/types
                         
 rfproxy_la_SOURCES = rfproxy.hh rfproxy.cc
-rfproxy_la_LIBADD = $(top_srcdir)/../build/lib/libipc.a $(top_srcdir)/../build/lib/librftable.a $(top_srcdir)/../build/lib/libutils.a 
+rfproxy_la_LIBADD = $(top_srcdir)/../build/lib/rflib.a
 rfproxy_la_LDFLAGS = -module -export-dynamic -lmongoclient
 
 NOX_RUNTIMEFILES = meta.json	

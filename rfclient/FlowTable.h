@@ -7,9 +7,9 @@
 #include <boost/thread.hpp>
 #include "libnetlink.hh"
 
-#include "IPC.h"
-#include "IPAddress.h"
-#include "MACAddress.h"
+#include "ipc/IPC.h"
+#include "types/IPAddress.h"
+#include "types/MACAddress.h"
 
 using namespace std;
 

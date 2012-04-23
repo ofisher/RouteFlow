@@ -21,9 +21,9 @@
 
 #include "component.hh"
 #include "config.h"
-#include "IPC.h"
-#include "RFTable.h"
-#include "RFProtocolFactory.h"
+#include "ipc/IPC.h"
+#include "ipc/RFProtocolFactory.h"
+#include "rftable/RFTable.h"
 
 #ifdef LOG4CXX_ENABLED
 #include <boost/format.hpp>

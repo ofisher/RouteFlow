@@ -1,12 +1,12 @@
 #include <syslog.h>
 
-#include "IPC.h"
-#include "MongoIPC.h"
-#include "RFProtocol.h"
-#include "defs.h"
-#include "RFTable.h"
-#include "RFProtocolFactory.h"
+#include "ipc/IPC.h"
+#include "ipc/MongoIPC.h"
+#include "ipc/RFProtocol.h"
+#include "ipc/RFProtocolFactory.h"
+#include "rftable/RFTable.h"
 #include "converter.h"
+#include "defs.h"
 
 class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
     public:
