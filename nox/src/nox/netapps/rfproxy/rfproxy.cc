@@ -11,7 +11,6 @@
 #include "datapath-join.hh"
 #include "port-status.hh"
 #include "datapath-leave.hh"
-#include "desc-stats-in.hh"
 #include "buffer.hh"
 #include "flow.hh"
 #include "netinet++/ethernet.hh"
@@ -26,9 +25,6 @@
 #include "openflow/rfofmsg.h"
 #include "converter.h"
 #include "defs.h"
-
-// This queue stores switch port numbers
-queue<int> ports_num;
 
 namespace vigil {
 
@@ -55,8 +51,6 @@ void rfproxy::install()
         (boost::bind(&rfproxy::handle_datapath_join, this, _1));
     register_handler<Datapath_leave_event>
         (boost::bind(&rfproxy::handle_datapath_leave, this, _1));
-    register_handler<Desc_stats_in_event>
-        (boost::bind(&rfproxy::handle_desc_in, this, _1));
 }
 
 void rfproxy::getInstance(const Context* c, rfproxy*& component)
@@ -122,12 +116,19 @@ bool rfproxy::process(IPCMessage& msg) {
 
 Disposition rfproxy::handle_datapath_join(const Event& e) {
     const Datapath_join_event& dj = assert_cast<const Datapath_join_event&> (e);
-
-    ofp_stats_request* osr = NULL;
+    DatapathJoin msg(dj.datapath_id.as_host(), dj.ports.size() - 1, dj.datapath_id.as_host() == RFVS_DPID);
+    ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, msg);
+    VLOG_INFO(lg,
+        "Datapath join message sent to the server for dp=0x%llx",
+        dj.datapath_id.as_host());
+    
+    // TODO: remove this code
+    // Sending a stats request is necessary because the modified version of
+    // switchstats.py relies on this behavior. Fix it and then remove this.
+	ofp_stats_request* osr = NULL;
 	size_t msize = sizeof(ofp_stats_request);
 	boost::shared_array<uint8_t> raw_sr(new uint8_t[msize]);
-
-	// Send OFPT_STATS_REQUEST
+	// Request switch description. Generates a desc_in event.
 	osr = (ofp_stats_request*) raw_sr.get();
 	osr->header.type = OFPT_STATS_REQUEST;
 	osr->header.version = OFP_VERSION;
@@ -135,12 +136,10 @@ Disposition rfproxy::handle_datapath_join(const Event& e) {
 	osr->header.xid = 0;
 	osr->type = htons(OFPST_DESC);
 	osr->flags = htons(0);
-	ports_num.push(dj.ports.size() - 1);
-
-	// Request switch description. Generates a desc_in event.
+	// Send OFPT_STATS_REQUEST
 	send_openflow_command(dj.datapath_id, &osr->header, false);
-
-	return CONTINUE;
+        
+    return CONTINUE;
 }
 
 Disposition rfproxy::handle_datapath_leave(const Event& e) {
@@ -294,17 +293,6 @@ Disposition rfproxy::handle_packet_in(const Event& e) {
                     dp_port);
             }
     }
-    return CONTINUE;
-}
-
-Disposition rfproxy::handle_desc_in(const Event& e) {
-    const Desc_stats_in_event& ds = assert_cast<const Desc_stats_in_event&>(e);
-    DatapathJoin msg(ds.datapath_id.as_host(), ports_num.front(), ds.hw_desc == RFVS_HWDESC);
-    ports_num.pop();
-    ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, msg);
-    VLOG_INFO(lg,
-        "Datapath join message sent to the server for dp=0x%llx",
-        ds.datapath_id.as_host());
     return CONTINUE;
 }
 

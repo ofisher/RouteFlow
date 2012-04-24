@@ -19,7 +19,7 @@
 #define FULL_IPV4_MASK "255.255.255.255"
 #define EMPTY_MAC_ADDRESS "00:00:00:00:00:00"
 
-#define RFVS_HWDESC "rfovs"
+#define RFVS_DPID 0x7266767372667673
 
 // We must match_l2 in order for packets to go up.
 #define MATCH_L2 true

@@ -69,7 +69,6 @@ class rfproxy : public Component, private IPCMessageProcessor
         Disposition handle_datapath_join(const Event& e);
         Disposition handle_datapath_leave(const Event& e);
         Disposition handle_packet_in(const Event& e);
-        Disposition handle_desc_in(const Event& e);
         bool process(IPCMessage& msg);
 };
 }

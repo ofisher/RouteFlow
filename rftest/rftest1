@@ -61,7 +61,7 @@ if [ "$1" != "clear" ]; then
     sleep 3
     
     echo "Starting the control plane network (dp0 OVS)..."
-    ovs-openflowd --hw-desc=rfovs dp0 tcp:127.0.0.1:6633 --out-of-band --detach --ports=rfvm1.1,rfvm1.2  &>> $LOG_FILE
+    ovs-openflowd --datapath-id=7266767372667673 dp0 tcp:127.0.0.1:6633 --out-of-band --detach --ports=rfvm1.1,rfvm1.2  &>> $LOG_FILE
     sleep 3
 
     echo "Starting the sample network..."
