@@ -198,7 +198,7 @@ class Component:
             
 
     def send_openflow_packet(self, dp_id, packet, actions, 
-                             inport=openflow.OFPP_CONTROLLER):
+                             inport=openflow.OFPP_NONE):
         """
         sends an openflow packet to a datapath
 
@@ -221,7 +221,7 @@ class Component:
             raise Exception('Bad argument')
 
     def send_openflow_buffer(self, dp_id, buffer_id, actions, 
-                             inport=openflow.OFPP_CONTROLLER):
+                             inport=openflow.OFPP_NONE):
         """
         Tells a datapath to send out a buffer
         
@@ -272,7 +272,7 @@ class Component:
     # Former PyAPI methods
 
     def send_openflow(self, dp_id, buffer_id, packet, actions,
-                      inport=openflow.OFPP_CONTROLLER):
+                      inport=openflow.OFPP_NONE):
         """
         Sends an openflow packet to a datapath.
 

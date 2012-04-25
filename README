@@ -79,10 +79,69 @@ These instructions are tested on Ubuntu 11.04.
 
 ** Open vSwitch **
 1) Install the dependencies:
-$ sudo apt-get install linux-headers-generic
+$ sudo apt-get install build-essential linux-headers-generic
 
-2) Follow the instructions in section "1. Open vSwitch setup" at:
-https://sites.google.com/site/routeflow/documents/first-routeflow
+2) Download Open vSwitch 1.4.0, extract it to a folder and browse to it:
+$ wget http://openvswitch.org/releases/openvswitch-1.4.0.tar.gz
+$ tar xzf openvswitch-1.4.0.tar.gz
+$ cd openvswitch-1.4.0
+
+3) Configure it as a kernel module, then compile and install
+$ ./configure --with-linux=/lib/modules/`uname -r`/build
+$ make
+$ make install
+
+4) Install the modules in your system:
+$ sudo mkdir /lib/modules/`uname -r`/kernel/net/ovs
+$ sudo cp datapath/linux/*.ko /lib/modules/`uname -r`/kernel/net/ovs/
+$ sudo depmod -a
+$ sudo modprobe openvswitch_mod
+
+Optionally, you may choose to skip the steps above and load the module manually 
+every time:
+
+$ sudo insmod datapath/linux/openvswitch_mod.ko
+
+--- Note ---
+	If for some reason the bridge module is loaded in your system, the command 
+	above will fail with an invalid module format error. If you don't need the 
+	default bridge support in your system, use the modprobe -r bridge command to 
+	unload it and try the modprobe command again. If you need bridge support, 
+	you can get some help from the INSTALL.bridge file instructions in the 
+	Open vSwitch distribution directory.
+
+	To avoid automatic loading of the bridge module (which would conflict with 
+	openvswitch_mod), let's blacklist it. Access the /etc/modprobe.d/ directory 
+	and create a new bridge.conf file:
+
+	$ cd /etc/modprobe.d
+	$ sudo vi bridge.conf
+
+	Insert the following lines in the editor, save and close:
+
+	# avoid conflicts with the openvswitch module
+	blacklist bridge
+
+	Edit /etc/modules to configure the automatic loading of the openvswitch_mod 
+	module:
+
+	$ cd /etc
+	$ sudo vi modules
+
+	Insert the following line at the end of the file, save and close:
+
+	openvswitch_mod
+
+	To be sure that everything is OK, reboot your computer. Log in and try the 
+	following command. If the "openvswitch_mod" line is shown like in the 
+	example below, you're fine to go.
+
+	$ sudo lsmod | grep openvswitch_mod
+	openvswitch_mod        68247  0 
+
+5) Initialize the configuration database:
+$ mkdir -p /usr/local/etc/openvswitch
+$ ovsdb-tool create /usr/local/etc/openvswitch/conf.db vswitchd/vswitch.ovsschema
 
 
 ** NOX install instructions **
@@ -138,6 +197,7 @@ https://github.com/mongodb/mongo/commit/a1e68969d48bbb47c893870f6428048a602faf90
 $ scons all
 $ sudo scons --full install --prefix=/usr --sharedclient
 $ sudo pip install pymongo
+
 
 ** RouteFlow **
 1) Install the dependencies:
