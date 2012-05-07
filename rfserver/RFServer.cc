@@ -188,7 +188,7 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
             ipc->send(SERVER_CONTROLLER_CHANNEL, CONTROLLER_ID, msg);
         }
 
-        bool process(IPCMessage& msg) {
+        bool process(const string &from, const string &to, const string &channel, IPCMessage& msg) {
             int type = msg.get_type();
             // TODO: move as much of these to functions to make it more readable
             if (type == VM_REGISTER_REQUEST) {

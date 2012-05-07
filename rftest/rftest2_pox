@@ -12,6 +12,15 @@ LOG_FILE=/var/log/rftest2.log
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 cd $RF_HOME &> $LOG_FILE
 
+# Always try to start OVS
+ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock \
+	                 --remote=db:Open_vSwitch,manager_options \
+	                 --private-key=db:SSL,private_key \
+	                 --certificate=db:SSL,certificate \
+	                 --bootstrap-ca-cert=db:SSL,ca_cert \
+	                 --pidfile --detach &>> $LOG_FILE
+ovs-vswitchd --pidfile --detach	&>> $LOG_FILE
+	
 echo "Resetting and stopping LXC VMs..."
 rm -f $LXCDIR/rfvmA/rootfs/var/run/network/ifstate &>> $LOG_FILE
 rm -f $LXCDIR/rfvmB/rootfs/var/run/network/ifstate &>> $LOG_FILE
@@ -23,10 +32,14 @@ lxc-stop -n rfvmB &>> $LOG_FILE
 lxc-stop -n rfvmC &>> $LOG_FILE
 lxc-stop -n rfvmD &>> $LOG_FILE
 
-echo "Stopping any running instances and data of rf-server, NOX, OVS and MongoDB..."
+echo "Stopping any running instances and data of rf-server, POX, OVS and MongoDB..."
 pkill -15 rfserver &> /dev/null
-pkill -15 lt-nox_core &> /dev/null
-pkill -15 ovs-openflowd &> /dev/null
+pkill -15 python2.7 &> /dev/null
+
+sudo ovs-vsctl del-br br0
+sudo ovs-vsctl del-br dp0
+sudo ovs-vsctl emer-reset
+
 pkill -15 mongod &> /dev/null
 rm -r $HOME/db &>> $LOG_FILE
 rm -r /var/lib/lxc/rfvmA/rootfs/opt/rfclient
@@ -93,26 +106,44 @@ if [ "$1" != "clear" ]; then
     lxc-start -n rfvmB -d &>> $LOG_FILE
     lxc-start -n rfvmC -d &>> $LOG_FILE
     lxc-start -n rfvmD -d &>> $LOG_FILE
-
+    
     echo "Starting the management network (br0)..."
-    ( cd nox/build/src && ./nox_core -i ptcp:6363 switch -d ) &>> $LOG_FILE
     sleep 5
-    ovs-openflowd br0 tcp:127.0.0.1:6363 --out-of-band --detach --ports=rfvmA.0,rfvmB.0,rfvmC.0,rfvmD.0 &>> $LOG_FILE
+	ovs-vsctl add-br br0 \
+		-- add-port br0 rfvmA.0 \
+		-- add-port br0 rfvmB.0 \
+		-- add-port br0 rfvmC.0 \
+		-- add-port br0 rfvmD.0 &>> $LOG_FILE
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
-    echo "Starting NOX and the RouteFlow network controller..."
-    ( cd nox/build/src && ./nox_core -i ptcp:6633 jsonstats switchstats rfproxy topology --verbose="rfproxy:ANY:INFO" &>> $LOG_FILE & )
+    echo "Starting POX and the RouteFlow network controller..."
+    ( cd pox && ./pox.py --no-cli --verbose topology openflow.topology rfproxy & &>> $LOG_FILE & )
     sleep 5
-
+    
     echo "Starting the RouteFlow server..."
     build/rfserver &>> $LOG_FILE &
     sleep 3
 
     echo "Starting the control plane network (dp0 OVS)..."
-    ovs-openflowd dp0 --datapath-id=7266767372667673 tcp:127.0.0.1:6633 --out-of-band --detach \
-    --ports=rfvmA.1,rfvmA.2,rfvmA.3,rfvmA.4,rfvmB.1,rfvmB.2,rfvmB.3,rfvmC.1,rfvmC.2,rfvmC.3,rfvmD.1,rfvmD.2,rfvmD.3,rfvmD.4 &>> $LOG_FILE
-    ifconfig dp0 up
+	ovs-vsctl add-br dp0 \
+		-- add-port dp0 rfvmA.1 \
+		-- add-port dp0 rfvmA.2 \
+		-- add-port dp0 rfvmA.3 \
+		-- add-port dp0 rfvmA.4 \
+		-- add-port dp0 rfvmB.1 \
+		-- add-port dp0 rfvmB.2 \
+		-- add-port dp0 rfvmB.3 \
+		-- add-port dp0 rfvmC.1 \
+		-- add-port dp0 rfvmC.2 \
+		-- add-port dp0 rfvmC.3 \
+		-- add-port dp0 rfvmD.1 \
+		-- add-port dp0 rfvmD.2 \
+		-- add-port dp0 rfvmD.3 \
+		-- add-port dp0 rfvmD.4 &>> $LOG_FILE
+	ovs-vsctl set Bridge dp0 other-config:datapath-id=7266767372667673 &>> $LOG_FILE
+	ovs-vsctl set-controller dp0 tcp:127.0.0.1:6633
+    ifconfig dp0 up &>> $LOG_FILE
     sleep 3
 
     cd - &> /dev/null

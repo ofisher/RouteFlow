@@ -12,11 +12,6 @@ void MongoIPCMessageService::createChannel(mongo::DBClientConnection &con, const
     con.createCollection(ns, CC_SIZE, true);
     con.ensureIndex(ns, BSON("_id" << 1));
     con.ensureIndex(ns, BSON(TO_FIELD << 1));
-    // WARNING: this was disabled without much consideration. Any bugs should
-    // be blamed on these lines.
-    // Insert a dummy message to force collection creation
-    //    mongo::BSONObjBuilder dummy;
-    //    con.insert(ns, dummy.obj());
 }
 
 void MongoIPCMessageService::connect(mongo::DBClientConnection &connection, const string &address) {
@@ -43,7 +38,7 @@ void MongoIPCMessageService::listenWorker(const string &channelId, IPCMessageFac
             mongo::BSONObj envelope = cur->nextSafe();
             
             IPCMessage *msg = takeFromEnvelope(envelope, factory);
-            processor->process(*msg);
+            processor->process(envelope["from"].String(), this->get_id(), channelId, *msg);
             delete msg;
             
             connection.update(ns,
@@ -68,19 +63,20 @@ bool MongoIPCMessageService::send(const string &channelId, const string &to, IPC
     string ns = this->db + "." + channelId;
     
     this->createChannel(producerConnection, ns);
-    this->producerConnection.insert(ns, putInEnvelope(to, msg));
+    this->producerConnection.insert(ns, putInEnvelope(this->get_id(), to, msg));
     
     return true;
 }
 
-mongo::BSONObj putInEnvelope(const string &to, IPCMessage &msg) {
+mongo::BSONObj putInEnvelope(const string &from, const string &to, IPCMessage &msg) {
     mongo::BSONObjBuilder envelope;
     
     envelope.genOID();
+    envelope.append(FROM_FIELD, from);
     envelope.append(TO_FIELD, to);
-    envelope.append(READ_FIELD, false);
     envelope.append(TYPE_FIELD, msg.get_type());
-    
+    envelope.append(READ_FIELD, false);
+        
     const char* data = msg.to_BSON();
     envelope.append(CONTENT_FIELD, mongo::BSONObj(data));
     delete data;

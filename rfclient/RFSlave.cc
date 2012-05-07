@@ -101,7 +101,7 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
         uint8_t gVmMAC[IFHWADDRLEN];
         bool is_init;
         
-        bool process(IPCMessage& msg) {
+        bool process(const string &from, const string &to, const string &channel, IPCMessage& msg) {
             int type = msg.get_type();
             if (type == VM_REGISTER_RESPONSE) {
                 VMRegisterResponse *response = dynamic_cast<VMRegisterResponse*>(&msg);
@@ -190,7 +190,6 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
 			        sizeof(uint16_t));
 	        memcpy((void *) (buffer + 14), (void *) &VMid, sizeof(uint64_t));
 	        memcpy((void *) (buffer + 22), (void *) &port, sizeof(uint8_t));
-
             syslog(LOG_INFO, "Sending mapping packet for interface name=%s", ethName);
 	        return (sendto(SockFd, buffer, BUFFER_SIZE, 0, (struct sockaddr *) &sll, (socklen_t) addrLen));
 

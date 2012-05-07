@@ -4,6 +4,7 @@
 #include <mongo/client/dbclient.h>
 #include "IPC.h"
 
+#define FROM_FIELD "from"
 #define TO_FIELD "to"
 #define TYPE_FIELD "type"
 #define READ_FIELD "read"
@@ -12,7 +13,7 @@
 // 1 MB for the capped collection
 #define CC_SIZE 1048576
 
-mongo::BSONObj putInEnvelope(const string &to, IPCMessage &msg);
+mongo::BSONObj putInEnvelope(const string &from, const string &to, IPCMessage &msg);
 IPCMessage* takeFromEnvelope(mongo::BSONObj envelope, IPCMessageFactory *factory);
 
 /** An IPC message service that uses MongoDB as its backend. */

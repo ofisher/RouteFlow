@@ -27,7 +27,7 @@ lxc-stop -n b2 &>> $LOG_FILE
 lxc-stop -n b1 &>> $LOG_FILE
 lxc-stop -n rfvm1 &>> $LOG_FILE
 
-echo "Stopping any running instances and data of rfserver, NOX, OVS and MongoDB..."
+echo "Stopping any running instances and data of rfserver, POX, OVS and MongoDB..."
 pkill -15 rfserver &> /dev/null
 pkill -15 lt-nox_core &> /dev/null
 pkill -15 mongod &> /dev/null
@@ -66,8 +66,7 @@ if [ "$1" != "clear" ]; then
     ifconfig br0 up
     ifconfig br0 192.169.1.1
 
-    echo "Starting NOX and the RouteFlow network controller..."
-    # ( cd nox/build/src && ./nox_core -i ptcp:6633 rfproxy --verbose="rfproxy:ANY:INFO" &>> $LOG_FILE & )
+    echo "Starting POX and the RouteFlow network controller..."
     ( cd pox && ./pox.py --no-cli --verbose topology openflow.topology rfproxy & &>> $LOG_FILE & )
     sleep 5
     

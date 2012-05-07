@@ -35,12 +35,12 @@ lxc-stop -n rfvmD &>> $LOG_FILE
 echo "Stopping any running instances and data of rf-server, NOX, OVS and MongoDB..."
 pkill -15 rfserver &> /dev/null
 pkill -15 lt-nox_core &> /dev/null
+pkill -15 mongod &> /dev/null
 
 sudo ovs-vsctl del-br br0
 sudo ovs-vsctl del-br dp0
 sudo ovs-vsctl emer-reset
 
-pkill -15 mongod &> /dev/null
 rm -r $HOME/db &>> $LOG_FILE
 rm -r /var/lib/lxc/rfvmA/rootfs/opt/rfclient
 rm -r /var/lib/lxc/rfvmB/rootfs/opt/rfclient

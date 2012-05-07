@@ -60,7 +60,7 @@ void rfproxy::getInstance(const Context* c, rfproxy*& component)
             typeid(rfproxy).name())));
 }
 
-bool rfproxy::process(IPCMessage& msg) {
+bool rfproxy::process(const string &from, const string &to, const string &channel, IPCMessage& msg) {
     int type = msg.get_type();
     if (type == DATAPATH_CONFIG) {
         DatapathConfig *config = dynamic_cast<DatapathConfig*>(&msg);

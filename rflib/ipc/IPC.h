@@ -43,10 +43,13 @@ needs of the application. */
 class IPCMessageProcessor {
     public:
         /** This method should process messages based on the desired behavior.
+        @param from the message sender
+        @param to the message receiver
+        @param channel the channel the message was sent
         @param msg the message to process
         @return true if the message was successfully processed, false otherwise
         */
-        virtual bool process(IPCMessage& msg) = 0;
+        virtual bool process(const string &from, const string &to, const string &channel, IPCMessage& msg) = 0;
 };
 
 /** Abstract class for an IPC messaging service using the Publish/Subscribe 
