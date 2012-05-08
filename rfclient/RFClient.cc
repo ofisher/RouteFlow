@@ -81,9 +81,9 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
         void start() {
             syslog(LOG_INFO, "Attemping to register with server");
             VMRegisterRequest request(this->gVmId);
-            ipc->send(SLAVE_SERVER_CHANNEL, SERVER_ID, request);
+            ipc->send(RFCLIENT_RFSERVER_CHANNEL, RFSERVER_ID, request);
             syslog(LOG_INFO, "Listening for messages from server...");
-            ipc->listen(SLAVE_SERVER_CHANNEL, this, this, true);
+            ipc->listen(RFCLIENT_RFSERVER_CHANNEL, this, this, true);
         }
 
         void startFlowTable() {
@@ -372,7 +372,7 @@ int main(int argc, char* argv[]) {
 
     // If no ID is given, get it from the default NIC MAC address.
     if (id.empty()) {
-        ss << get_vmId(DEFAULT_SLAVE_INTERFACE);
+        ss << get_vmId(DEFAULT_RFCLIENT_INTERFACE);
         id = ss.str();
     }
 

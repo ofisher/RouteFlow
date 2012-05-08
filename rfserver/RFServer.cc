@@ -11,10 +11,10 @@
 class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
     public:
         RFServer() {
-            this->ipc = (IPCMessageService*) new MongoIPCMessageService(MONGO_ADDRESS, MONGO_DB_NAME, SERVER_ID);
+            this->ipc = (IPCMessageService*) new MongoIPCMessageService(MONGO_ADDRESS, MONGO_DB_NAME, RFSERVER_ID);
             this->rftable = new RFTable(MONGO_ADDRESS, MONGO_DB_NAME, RF_TABLE_NAME);
 
-            syslog(LOG_INFO, "Creating server id=%s", SERVER_ID);
+            syslog(LOG_INFO, "Creating server id=%s", RFSERVER_ID);
         }
 
         void start(bool clear) {
@@ -24,8 +24,8 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
             }
 
             syslog(LOG_INFO, "Listening for messages from slaves and controller...");
-            ipc->listen(SLAVE_SERVER_CHANNEL, this, this, false);
-            ipc->listen(SERVER_CONTROLLER_CHANNEL, this, this);
+            ipc->listen(RFCLIENT_RFSERVER_CHANNEL, this, this, false);
+            ipc->listen(RFSERVER_RFPROXY_CHANNEL, this, this);
         }
 
     private:
@@ -99,7 +99,7 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
             if (accept) {
                 syslog(LOG_INFO, "Accepting vm=0x%llx", vm_id);
                 response.set_accept(true);
-                this->ipc->send(SLAVE_SERVER_CHANNEL, _vm_id, response);
+                this->ipc->send(RFCLIENT_RFSERVER_CHANNEL, _vm_id, response);
 
                 // if it's not idle, we configure it.
                 if (not idle)
@@ -168,7 +168,7 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
             
             // TODO: specify number of ports as parameter
             VMConfig msg(0);
-            this->ipc->send(SLAVE_SERVER_CHANNEL, _vm_id, msg);
+            this->ipc->send(RFCLIENT_RFSERVER_CHANNEL, _vm_id, msg);
             syslog(LOG_INFO, "Configure message sent to vm=0x%llx", vm_id);
         }
 
@@ -185,7 +185,7 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
 
         void send_datapath_config_message(uint64_t dp_id, DATAPATH_CONFIG_OPERATION operation) {
             DatapathConfig msg(dp_id, (uint32_t) operation);
-            ipc->send(SERVER_CONTROLLER_CHANNEL, CONTROLLER_ID, msg);
+            ipc->send(RFSERVER_RFPROXY_CHANNEL, RFPROXY_ID, msg);
         }
 
         bool process(const string &from, const string &to, const string &channel, IPCMessage& msg) {
@@ -216,7 +216,7 @@ class RFServer : private RFProtocolFactory, private IPCMessageProcessor {
                 flow.set_dst_hwaddress(info->get_dst_hwaddress());
                 flow.set_is_removal(info->get_is_removal());
 
-                ipc->send(SERVER_CONTROLLER_CHANNEL, CONTROLLER_ID, flow);
+                ipc->send(RFSERVER_RFPROXY_CHANNEL, RFPROXY_ID, flow);
             }
             else if (type == DATAPATH_LEAVE) {
                 DatapathLeave* dpleave = dynamic_cast<DatapathLeave*>(&msg);

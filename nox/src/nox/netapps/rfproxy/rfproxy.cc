@@ -41,9 +41,9 @@ void rfproxy::install()
     rftable = new RFTable(MONGO_ADDRESS,MONGO_DB_NAME,RF_TABLE_NAME);
 
     // Start the IPC
-    ipc = new MongoIPCMessageService(MONGO_ADDRESS, MONGO_DB_NAME, CONTROLLER_ID);
+    ipc = new MongoIPCMessageService(MONGO_ADDRESS, MONGO_DB_NAME, RFPROXY_ID);
     factory = new RFProtocolFactory();
-    ipc->listen(SERVER_CONTROLLER_CHANNEL, factory, this, false);
+    ipc->listen(RFSERVER_RFPROXY_CHANNEL, factory, this, false);
 
     register_handler<Packet_in_event>
         (boost::bind(&rfproxy::handle_packet_in, this, _1));
@@ -117,7 +117,7 @@ bool rfproxy::process(const string &from, const string &to, const string &channe
 Disposition rfproxy::handle_datapath_join(const Event& e) {
     const Datapath_join_event& dj = assert_cast<const Datapath_join_event&> (e);
     DatapathJoin msg(dj.datapath_id.as_host(), dj.ports.size() - 1, dj.datapath_id.as_host() == RFVS_DPID);
-    ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, msg);
+    ipc->send(RFSERVER_RFPROXY_CHANNEL, RFSERVER_ID, msg);
     VLOG_INFO(lg,
         "Datapath join message sent to the server for dp=0x%llx",
         dj.datapath_id.as_host());
@@ -145,7 +145,7 @@ Disposition rfproxy::handle_datapath_join(const Event& e) {
 Disposition rfproxy::handle_datapath_leave(const Event& e) {
     const Datapath_leave_event& dl = assert_cast<const Datapath_leave_event&> (e);
     DatapathLeave dlm(dl.datapath_id.as_host());
-    ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, dlm);
+    ipc->send(RFSERVER_RFPROXY_CHANNEL, RFSERVER_ID, dlm);
     VLOG_INFO(lg,
         "A datapath_leave message was sent to the server (dp=0x%llx)",
         dl.datapath_id.as_host());
@@ -177,7 +177,7 @@ Disposition rfproxy::handle_packet_in(const Event& e) {
         mapmsg.set_vm_port(data->vm_port);
         mapmsg.set_vs_id(pi.datapath_id.as_host());
         mapmsg.set_vs_port(pi.in_port);
-        ipc->send(SERVER_CONTROLLER_CHANNEL, SERVER_ID, mapmsg);
+        ipc->send(RFSERVER_RFPROXY_CHANNEL, RFSERVER_ID, mapmsg);
 
 		return CONTINUE;
 	}

@@ -344,7 +344,7 @@ int32_t FlowTable::addFlowToHw(const RouteEntry& rentry) {
     msg.set_netmask(rentry.netmask);
 
     // Send
-    FlowTable::ipc->send(SLAVE_SERVER_CHANNEL, SERVER_ID, msg);
+    FlowTable::ipc->send(RFCLIENT_RFSERVER_CHANNEL, RFSERVER_ID, msg);
 
 	return 0;
 }
@@ -362,7 +362,7 @@ int32_t FlowTable::addFlowToHw(const HostEntry& hentry) {
     msg.set_netmask(IPAddress(IPV4, FULL_IPV4_MASK));
 
     // Send
-    FlowTable::ipc->send(SLAVE_SERVER_CHANNEL, SERVER_ID, msg);
+    FlowTable::ipc->send(RFCLIENT_RFSERVER_CHANNEL, RFSERVER_ID, msg);
 
 	return 0;
 }
@@ -383,7 +383,7 @@ int32_t FlowTable::delFlowFromHw(const RouteEntry& rentry) {
     msg.set_netmask(rentry.netmask);
 
     // Send
-    FlowTable::ipc->send(SLAVE_SERVER_CHANNEL, SERVER_ID, msg);
+    FlowTable::ipc->send(RFCLIENT_RFSERVER_CHANNEL, RFSERVER_ID, msg);
 
 	return 0;
 }
@@ -401,7 +401,7 @@ int32_t FlowTable::delFlowFromHw(const HostEntry& hentry) {
     msg.set_netmask(IPAddress(IPV4, FULL_IPV4_MASK));
 
     // Send
-    FlowTable::ipc->send(SLAVE_SERVER_CHANNEL, SERVER_ID, msg);
+    FlowTable::ipc->send(RFCLIENT_RFSERVER_CHANNEL, RFSERVER_ID, msg);
 
 	return 0;
 }

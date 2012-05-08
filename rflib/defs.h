@@ -4,15 +4,15 @@
 #define MONGO_ADDRESS "192.169.1.1:27017"
 #define MONGO_DB_NAME "db"
 
-#define SLAVE_SERVER_CHANNEL "slave<->server"
-#define SERVER_CONTROLLER_CHANNEL "server<->controller"
+#define RFCLIENT_RFSERVER_CHANNEL "rfclient<->rfserver"
+#define RFSERVER_RFPROXY_CHANNEL "rfserver<->rfproxy"
 
 #define RF_TABLE_NAME "rftable"
 
-#define SERVER_ID "rf-server"
-#define CONTROLLER_ID "rf-controller"
+#define RFSERVER_ID "rfserver"
+#define RFPROXY_ID "rfproxy"
 
-#define DEFAULT_SLAVE_INTERFACE "eth0"
+#define DEFAULT_RFCLIENT_INTERFACE "eth0"
 
 #define SYSLOGFACILITY LOG_LOCAL7
 
