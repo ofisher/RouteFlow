@@ -118,7 +118,7 @@ if [ "$1" != "clear" ]; then
     ifconfig br0 192.169.1.1
 
     echo "Starting POX and the RouteFlow network controller..."
-    ( cd pox && ./pox.py --no-cli --verbose topology openflow.topology rfproxy & &>> $LOG_FILE & )
+    ( cd pox && ./pox.py --no-cli topology openflow.topology rfproxy & &>> $LOG_FILE & )
     sleep 5
     
     echo "Starting the RouteFlow server..."

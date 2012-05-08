@@ -141,8 +141,7 @@ def application(env, start_response):
                     "GET messages/[channel]: messages in channel [channel]\n" \
                     "\n" \
                     "Pages:\n" \
-                    "/index.html: main page\n" \
-                    "/rfgraph.html: new network graph (testing, unstable)\n"
+                    "/index.html: main page\n"
                     
     if ctype == JSON and callback is not None:
         rbody = "{0}({1})".format(callback, rbody)
