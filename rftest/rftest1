@@ -67,8 +67,7 @@ if [ "$1" != "clear" ]; then
     ifconfig br0 192.169.1.1
 
     echo "Starting NOX and the RouteFlow network controller..."
-    # ( cd nox/build/src && ./nox_core -i ptcp:6633 rfproxy --verbose="rfproxy:ANY:INFO" &>> $LOG_FILE & )
-    ( cd pox && ./pox.py --no-cli --verbose topology openflow.topology rfproxy & &>> $LOG_FILE & )
+    ( cd nox/build/src && ./nox_core -i ptcp:6633 rfproxy --verbose="rfproxy:ANY:INFO" &>> $LOG_FILE & )
     sleep 5
     
     echo "Starting the RouteFlow server..."
