@@ -120,8 +120,8 @@ function update_table(table, msgprefix) {
 }
 
 function update() {
-    update_table("slave_server", "ss");
-    update_table("server_controller", "sc");
+    update_table("rfclient_rfserver", "ss");
+    update_table("rfserver_rfclient", "sc");
 }
 
 function toggle(id) {
