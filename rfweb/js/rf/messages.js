@@ -121,7 +121,7 @@ function update_table(table, msgprefix) {
 
 function update() {
     update_table("rfclient_rfserver", "ss");
-    update_table("rfserver_rfclient", "sc");
+    update_table("rfserver_rfproxy", "sc");
 }
 
 function toggle(id) {
