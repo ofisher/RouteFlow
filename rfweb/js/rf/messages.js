@@ -1,59 +1,59 @@
-SLAVE_SERVER = 0
-SERVER_CONTROLLER = 1
+RFCLIENT_RFSERVER = 0
+RFSERVER_RFPROXY = 1
 
 types = {
     0: {
         "name": "VMRegisterRequest",
         "show": true,
-        "channel": SLAVE_SERVER,
+        "channel": RFCLIENT_RFSERVER,
     },
     
     1: {
         "name": "VMRegisterResponse",
         "show": true,
-        "channel": SLAVE_SERVER,
+        "channel": RFCLIENT_RFSERVER,
     },
     
     2: {
         "name": "VMConfig",
         "show": true,
-        "channel": SLAVE_SERVER,
+        "channel": RFCLIENT_RFSERVER,
     },
     
     3: {
         "name": "DatapathConfig",
         "show": false,
-        "channel": SERVER_CONTROLLER,
+        "channel": RFSERVER_RFPROXY,
     },
     
     4: {
         "name": "RouteInfo",
         "show": false,
-        "channel": SLAVE_SERVER,
+        "channel": RFCLIENT_RFSERVER,
     },
     
     5: {
         "name": "FlowMod",
         "show": false,
-        "channel": SERVER_CONTROLLER,
+        "channel": RFSERVER_RFPROXY,
     },
     
     6: {
         "name": "DatapathJoin",
         "show": true,
-        "channel": SERVER_CONTROLLER,
+        "channel": RFSERVER_RFPROXY,
     },
     
     7: {
         "name": "DatapathLeave",
         "show": true,
-        "channel": SERVER_CONTROLLER,
+        "channel": RFSERVER_RFPROXY,
     },
     
     8: {
         "name": "VMMap",
         "show": false,
-        "channel": SERVER_CONTROLLER,
+        "channel": RFSERVER_RFPROXY,
     },
 }
 
@@ -138,14 +138,14 @@ function toggle(id) {
 }
 
 function start() {
-    var ss_type_filters = $("#ss_type_filters");
-    var sc_type_filters = $("#sc_type_filters");
+    var rfclient_rfserver_filters = $("#rfclient_rfserver_filters");
+    var rfserver_rfproxy_filters = $("#rfserver_rfproxy_filters");
     var filters;
     for (type in types) {
-        if (types[type].channel == SLAVE_SERVER)
-            filters = ss_type_filters;
-        else if (types[type].channel == SERVER_CONTROLLER)
-            filters = sc_type_filters;
+        if (types[type].channel == RFCLIENT_RFSERVER)
+            filters = rfclient_rfserver_filters;
+        else if (types[type].channel == RFSERVER_RFPROXY)
+            filters = rfserver_rfproxy_filters;
         else
             continue;
         

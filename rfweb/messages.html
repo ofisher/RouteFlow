@@ -4,17 +4,17 @@
     <div class="section_title">Filters</div>
     <div class="subsection">
         By message type:
-        <div class="subsection_title">Slave &harr; Server</div>
-        <div id="ss_type_filters"></div>
+        <div class="subsection_title">RFClients &harr; RFServer</div>
+        <div id="rfclient_rfserver_filters"></div>
         
-        <div class="subsection_title">Server &harr; Controller</div>
-        <div id="sc_type_filters"></div>
+        <div class="subsection_title">RFServer &harr; RFProxy</div>
+        <div id="rfserver_rfproxy_filters"></div>
     </div>
 </div>
 
 <div id="channels">
-    <div class="section" id="slave_server_channel">
-        <div class="section_title">Slave &harr; Server</div>
+    <div class="section" id="rfclient_rfserver_channel">
+        <div class="section_title">RFClients &harr; RFServer</div>
         <table>
             <thead>
                 <tr class="header">
@@ -25,12 +25,12 @@
                 </tr>
             </thead>
             
-            <tbody id="slave_server"></tbody>
+            <tbody id="rfclient_rfserver"></tbody>
         </table>
     </div>
 
-    <div class="section" id="server_controller_channel">
-        <div class="section_title">Server &harr; Controller</div>
+    <div class="section" id="rfserver_rfproxy_channel">
+        <div class="section_title">RFServer &harr; RFProxy</div>
         <table>
             <thead>
                 <tr class="header">
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             
-            <tbody id="server_controller"></tbody>
+            <tbody id="rfserver_rfproxy"></tbody>
         </table>
     </div>
 </div>
