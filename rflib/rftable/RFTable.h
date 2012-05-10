@@ -15,7 +15,6 @@
 #define VS_PORT "vs_port"
 #define DP_ID "dp_id"
 #define DP_PORT "dp_port"
-#define ACTIVE "active"
         
 using namespace std;
 

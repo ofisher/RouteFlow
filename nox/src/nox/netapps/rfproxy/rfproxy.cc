@@ -137,7 +137,7 @@ Disposition rfproxy::handle_datapath_join(const Event& e) {
 	osr->type = htons(OFPST_DESC);
 	osr->flags = htons(0);
 	// Send OFPT_STATS_REQUEST
-	send_openflow_command(dj.datapath_id, &osr->header, false);
+	send_openflow_command(dj.datapath_id, &osr->header, true);
         
     return CONTINUE;
 }
