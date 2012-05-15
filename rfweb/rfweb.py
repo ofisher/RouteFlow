@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-# WARNING: this web server is terrible and should not be used for anything other
-# than testing RouteFlow.
-# TODO: make a decent web server.
+# WARNING: this web application is terrible and should not be used for anything
+# other than testing RouteFlow.
+# TODO: make a decent web application.
 
-from wsgiref.simple_server import make_server
 from cgi import parse_qs, escape
 import json
 import urlparse
@@ -46,12 +45,9 @@ exts = {
 ".json": JSON,
 }
 
-try:
-    conn = pymongo.Connection("localhost", 27017)
-except:
-    pass
-    
-def messages(env):
+db_conn = None
+
+def messages(env, conn):
     channel = shift_path_info(env)
     if channel != None and channel != "":
         # TODO: escape parameters
@@ -60,7 +56,7 @@ def messages(env):
             table = getattr(conn.db, channel);
         except:
             return (404, "Invalid channel", JSON)
-        
+
         request = parse_qs(env["QUERY_STRING"])
         limit = 50
         query = {}
@@ -75,19 +71,18 @@ def messages(env):
                 except:
                     continue
                 query["$or"].append({"type": value})
-        
-        print query
-        
+
         for doc in table.find(query, limit=limit, sort=[("$natural", pymongo.DESCENDING)]):
             messages.append(doc)
-            
+
         return (200, json.dumps(messages, default=bson.json_util.default), JSON)
-    
-            
+
+
     else:
         return (404, "Channel not specified", JSON)
-        
-def switches(env):
+
+
+def switches(env, conn):
     id_ = shift_path_info(env)
     if id_ != None and id_ != "":
         attr = shift_path_info(env)
@@ -99,13 +94,15 @@ def switches(env):
             return (404, "Invalid switch attribute", JSON)
     else:
         return (404, "Switch not specified", JSON)
-            
-def rftable(env):
+
+
+def rftable(env, conn):
     entries = []
     for doc in conn.db.rftable.find():
         entries.append(doc)
     return (200, json.dumps(entries, default=bson.json_util.default), JSON)
-    
+
+
 def application(env, start_response):
     path = shift_path_info(env)
     request = parse_qs(env["QUERY_STRING"])
@@ -114,16 +111,23 @@ def application(env, start_response):
     except KeyError:
         callback = None
     
+    global db_conn
+    if db_conn is None:
+        try:
+            db_conn = pymongo.Connection("localhost", 27017)
+        except:
+            db_conn = None
+    
     status = 404
     rbody = ""
     ctype = PLAIN
-    
+
     if (path == "rftable"):
-        status, rbody, ctype = rftable(env)
+        status, rbody, ctype = rftable(env, db_conn)
     elif (path == "switches"):
-        status, rbody, ctype = switches(env)
+        status, rbody, ctype = switches(env, db_conn)
     elif (path == "messages"):
-        status, rbody, ctype = messages(env)
+        status, rbody, ctype = messages(env, db_conn)
     else:
         path = os.path.join(os.getcwd(), path + env["PATH_INFO"])
         if os.path.exists(path) and os.path.isfile(path):
@@ -138,21 +142,18 @@ def application(env, start_response):
                     "GET /rftable: RouteFlow table\n" \
                     "GET /switchs/[id]/stats: stats for switch [id]\n" \
                     "GET /switchs/[id]/flowtable: flowtable for switch [id]\n" \
-                    "GET messages/[channel]: messages in channel [channel]\n" \
+                    "GET /messages/[channel]: messages in channel [channel]\n" \
                     "\n" \
                     "Pages:\n" \
-                    "/index.html: main page\n"
-                    
+                    "GET /index.html: main page\n"
+
     if ctype == JSON and callback is not None:
         rbody = "{0}({1})".format(callback, rbody)
-        
+
     if (status == 404):
         start_response("404 Not Found", [("Content-Type", CONTENT_TYPES[ctype])])
     elif (status == 200):
         start_response("200 OK", [("Content-Type", CONTENT_TYPES[ctype]),
                                   ("Content-Length", str(len(rbody)))])
-                                  
-    return [rbody]
 
-httpd = make_server("", 8080, application)
-httpd.serve_forever()
+    return [rbody]
