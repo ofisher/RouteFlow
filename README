@@ -22,8 +22,8 @@ licenses.
 
 
 === Overview ===
-RouteFlow is made of three basic applications: rfclient, rfserver and
-rfproxy.
+RouteFlow is a distribution composed by three basic applications: rfclient,
+rfserver and rfproxy.
 
 - rfclient is the module running as a daemon in the Virtual Machine (VM)
 responsible for detecting changes in the linux ARP and routing tables.
@@ -41,14 +41,15 @@ interactions with the OpenFlow switches (identified by datapaths) via the
 OpenFlow protocol. It listens to instructions from the RFServer and also
 notifies whenever a switch joins or leavens the network.
 
-There is also a library (rflib) of common functions to all three applications.
-This library is in the folder "common". It defines the IPC, a central table for
-RouteFlow state data and utilities like custom types for IP and MAC addresses,
-OpenFlow message creation and type conversion.
+There is also a library of common functions (rflib). It defines the IPC, a
+central table for RouteFlow state data and utilities like custom types for IP
+and MAC addresses, OpenFlow message creation and type conversion.
 
 Additionally, there are two extra modules: rfweb, an web interface for
 RouteFlow and jsonflowagent, an SNMP agent.
 
+
+== RouteFlow architecture ===
 +--------VM---------+
 | Quagga | rfclient |
 +-------------------+
@@ -75,7 +76,9 @@ M:1      \ RFProtocol
 
 
 === Building ===
-These instructions are tested on Ubuntu 11.04.
+These instructions are tested on Ubuntu 11.04. The version of the NOX controller
+we are using does not compile under newer versions of Ubuntu (11.10, 12.04).
+
 
 ** Open vSwitch **
 1) Install the dependencies:
@@ -265,13 +268,18 @@ Test 2
    ping:
    mininet> pingall
 
-   You'll need to setup the network using virtual machines, and the 
+   You'll need to setup the network using virtual machines, and the
    configuration will depend on the chosen technology. If you have questions
-   about setting up RouteFlow on a particular technology, we might be able to 
-   help. See the section Support.
-   
+   about setting up RouteFlow on a particular technology, we might be able to
+   help. See the section "Support".
+
    For more details on this test, see:
    http://sites.google.com/site/routeflow/documents/tutorial2-four-routers-with-ospf
+
+POX
+   Experimental support for POX is included. There are versions of the tests
+   above written to run using POX (rftest*_pox). Note however that rfweb and
+   SNMP support won't work.
 
 
 === Web interface ===
@@ -281,7 +289,7 @@ WSGI specification: http://wsgi.readthedocs.org/en/latest/
 
 It's possible to run the application in several servers, and a simple server is
 provided in rfweb_server.py. This server is very simple, and you probably don't
-want to use it for anything more serious than playing and testing.
+want to use it for anything more serious than playing around and testing.
 
 We've also tested the application with gunicorn (http://gunicorn.org/). You can
 run rfweb on it using the following command:
@@ -292,6 +300,9 @@ $ gunicorn -w 4 -b 0.0.0.0:8080 rfweb:application
 Then to access the main page of the web interface (adapt the address to your
 setup), go to:
 http://localhost:8080/index.html
+
+The web interface currently only works with rftest2 running under NOX. Other
+tests should work, but this module still requires improvements.
 
 
 === Support ===
