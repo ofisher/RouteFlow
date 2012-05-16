@@ -1,4 +1,4 @@
-RouteFlow 1.0
+RouteFlow
 Copyright (C) 2012 CPqD
 
 === Welcome ===
@@ -11,11 +11,10 @@ RouteFlow for providing virtualized IP routing services on one or more OpenFlow
 switches.
 
 RouteFlow relies on the following technologies:
-- NOX v0.9 and OpenFlow v1.0 as the communication protocol for controlling
-  switches.
-- Open vSwitch to provide the connectivity within the virtual environmentwhere
+- NOX and OpenFlow v1.0 as the communication protocol for controlling switches.
+- Open vSwitch to provide the connectivity within the virtual environment where
   Linux virtual machines may run the Quagga routing engine.
-- MongoDB v2.0.2 as a central database and IPC.
+- MongoDB as a central database and IPC.
 
 Please be aware of NOX, OpenFlow, Open vSwitch, Quagga, MongoDB and RouteFlow
 licenses.
@@ -136,7 +135,7 @@ $ sudo insmod datapath/linux/openvswitch_mod.ko
 
 	To be sure that everything is OK, reboot your computer. Log in and try the
 	following command. If the "openvswitch_mod" line is shown like in the
-	example below, you're fine to go.
+	example below, you're ready to go.
 
 	$ sudo lsmod | grep openvswitch_mod
 	openvswitch_mod        68247  0
@@ -306,7 +305,7 @@ tests should work, but this module still requires improvements.
 
 
 === Support ===
-RouteFlow has a discussion list. You can send your questions at:
+RouteFlow has a discussion list. You can send your questions on:
 https://groups.google.com/group/routeflow-discuss/topics
 
 
@@ -325,6 +324,9 @@ https://groups.google.com/group/routeflow-discuss/topics
 
 
 === TODO (+ features expected in upcoming versions) ===
+- Preload VM-datapath association (and also the ports used) in RFServer, 
+  allowing for flexible configuration.
+  
 - Tests and instructions for other virtualization environments
 
 - Dynamic virtual topology maintenance, with selective routing protocol messages
