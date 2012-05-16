@@ -230,9 +230,6 @@ First, create the LXC containers that will run as virtual machines:
 Test 1
    $ sudo ./rftest1
 
-   For more details on this test, see:
-   http://sites.google.com/site/routeflow/documents/first-routeflow
-
    You can then log in to the LXC container b1 and try to ping b2:
    $ sudo lxc-console -n b1
    And inside b1:
@@ -241,12 +238,38 @@ Test 1
    To stop running:
    $ sudo ./rftest1 clear
 
+   For more details on this test, see:
+   http://sites.google.com/site/routeflow/documents/first-routeflow
+
 Test 2
    $ sudo ./rftest2
 
    To stop running:
    $ sudo ./rftest2 clear
 
+   This test should be run with a Mininet simulated network:
+   http://yuba.stanford.edu/foswiki/bin/view/OpenFlow/Mininet
+
+   Once you have a Mininet setup, copy the files in rftest to the VM:
+   $ scp topo-4sw-4host.py openflow@[Mininet address]:/home/openflow/mininet/custom
+   $ scp ipconf openflow@[Mininet address]:/home/openflow/
+
+   Then start the network:
+   $ sudo mn --custom ~/mininet/custom/topo-4sw-4host.py --topo=rftopo" \
+   --controller=remote --ip=[Controller address] --port=6633"
+
+   Inside Mininet, load the address configuration:
+   mininet> source ipconf
+
+   Wait for the network to converge (it should take a few seconds), and try to
+   ping:
+   mininet> pingall
+
+   You'll need to setup the network using virtual machines, and the 
+   configuration will depend on the chosen technology. If you have questions
+   about setting up RouteFlow on a particular technology, we might be able to 
+   help. See the section Support.
+   
    For more details on this test, see:
    http://sites.google.com/site/routeflow/documents/tutorial2-four-routers-with-ospf
 
@@ -257,7 +280,7 @@ topology, status and statistics. The application is written in Python using the
 WSGI specification: http://wsgi.readthedocs.org/en/latest/
 
 It's possible to run the application in several servers, and a simple server is
-provided in rfweb_server.py. This server is very simple, and you probably don't 
+provided in rfweb_server.py. This server is very simple, and you probably don't
 want to use it for anything more serious than playing and testing.
 
 We've also tested the application with gunicorn (http://gunicorn.org/). You can
@@ -269,6 +292,11 @@ $ gunicorn -w 4 -b 0.0.0.0:8080 rfweb:application
 Then to access the main page of the web interface (adapt the address to your
 setup), go to:
 http://localhost:8080/index.html
+
+
+=== Support ===
+RouteFlow has a discussion list. You can send your questions at:
+https://groups.google.com/group/routeflow-discuss/topics
 
 
 === Known Bugs ===
@@ -301,9 +329,6 @@ http://localhost:8080/index.html
   topology discovery and maintenance approach.
 
 - Keep routing packets in the virtual plane.
-
-- Properly separate rflib and implement it in other languages, allowing for
-  applications to be built for other controllers.
 
 - Create headers for RFClient.cc and RFServer.cc.
 
