@@ -329,19 +329,7 @@ https://groups.google.com/group/routeflow-discuss/topics
   
 - Tests and instructions for other virtualization environments
 
-- Dynamic virtual topology maintenance, with selective routing protocol messages
-  delivery to the datapath.
-
-- Flexible mapping (M:1, 1:N and M:N) between Datapath and VMs, allowing for
-  virtual routing approaches and/or physical switch stacking.
-
-- Hooks into Quagga Zebra to reflect link up/down events
-
-- Improve the scenario where routing protocol messages are kept in the virtual
-  domain and topology updates are replicated in response to an OpenFlow-based
-  topology discovery and maintenance approach.
-
-- Keep routing packets in the virtual plane.
+- Hooks into Quagga Zebra to reflect link up/down events and extract additional route / label information
 
 - Create headers for RFClient.cc and RFServer.cc.
 
@@ -355,8 +343,6 @@ https://groups.google.com/group/routeflow-discuss/topics
 - Wireshark dissector plugin for the RouteFlow protocol
 
 - Experiment with NEC Trema controller: Port routeflowc to Trema
-
-- Port controller app to other controllers
 
 - Add TTL-decrement action (if supported by the datapath devices)
 
