@@ -5,11 +5,13 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
+
 #include "ipc/RFProtocol.h"
 #include "converter.h"
 #include "defs.h"
 
 #include "FlowTable.h"
+#include "FPMServer.h"
 
 using namespace std;
 
@@ -25,6 +27,7 @@ int FlowTable::laddr = 0;
 int FlowTable::lroute = 0;
 boost::thread FlowTable::HTPolling;
 boost::thread FlowTable::RTPolling;
+boost::thread FlowTable::FPMClient;
 map<string, Interface> FlowTable::interfaces;
 vector<uint32_t>* FlowTable::down_ports;
 IPCMessageService* FlowTable::ipc;
@@ -58,9 +61,12 @@ void FlowTable::start(uint64_t vm_id, map<string, Interface> interfaces, IPCMess
 	rtnl_open(&rthNeigh, RTMGRP_NEIGH);
 
 	HTPolling = boost::thread(&FlowTable::HTPollingCb);
-	RTPolling = boost::thread(&FlowTable::RTPollingCb);
+	//RTPolling = boost::thread(&FlowTable::RTPollingCb);
+	FPMClient = boost::thread(&FPMServer::start);
+
 	HTPolling.detach();
-	RTPolling.detach();
+	//RTPolling.detach();
+	FPMClient.detach();
 }
 
 int FlowTable::updateHostTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg) {
@@ -137,9 +143,16 @@ int FlowTable::updateHostTable(const struct sockaddr_nl *who, struct nlmsghdr *n
 }
 
 int FlowTable::updateRouteTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg) {
-	struct rtmsg *rtmsg_ptr = (struct rtmsg *) NLMSG_DATA(n);
+  FlowTable::updateRouteTable(n);
+}
 
-	if (!((n->nlmsg_type == RTM_NEWROUTE || n->nlmsg_type == RTM_DELROUTE) && rtmsg_ptr->rtm_table == RT_TABLE_MAIN)) {
+
+int FlowTable::updateRouteTable( struct nlmsghdr *n) {
+
+  struct rtmsg *rtmsg_ptr = (struct rtmsg *) NLMSG_DATA(n);
+
+	if (!((n->nlmsg_type == RTM_NEWROUTE || n->nlmsg_type == RTM_DELROUTE) && (rtmsg_ptr->rtm_table == RT_TABLE_MAIN || rtmsg_ptr->rtm_table == RT_TABLE_UNSPEC))) {
+	  std::cout << "invalid route update n->nlmsg_type = " << n->nlmsg_type << " rtmsg_ptr->rtm_table = " << (int) rtmsg_ptr->rtm_table << "\n";
 		return 0;
 	}
 

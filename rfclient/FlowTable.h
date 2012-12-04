@@ -93,7 +93,7 @@ class FlowTable {
 
         static int updateHostTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg);
         static int updateRouteTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg);
-        
+        static int updateRouteTable(struct nlmsghdr *n);
     private:
         static struct rtnl_handle rth;
         static struct rtnl_handle rthNeigh;
@@ -110,6 +110,7 @@ class FlowTable {
         
         static boost::thread HTPolling;
         static boost::thread RTPolling;
+        static boost::thread FPMClient;
 
         static list<RouteEntry> routeTable;
         static list<HostEntry> hostTable;

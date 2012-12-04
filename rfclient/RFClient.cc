@@ -304,6 +304,7 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
 };
 
 int main(int argc, char* argv[]) {
+  setvbuf(stdout,NULL,_IOLBF,0);
     char c;
     stringstream ss;
     string id;
