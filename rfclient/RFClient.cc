@@ -22,8 +22,6 @@
 
 #define BUFFER_SIZE 23 /* Mapping packet size. */
 
-
-
 using namespace std;
 
 /* Get the MAC address of the interface. */
@@ -76,7 +74,6 @@ uint64_t get_interface_id(const char *ifname) {
 class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
     public:
         RFClient(uint64_t id, const string &address) {
-
             this->id = id;
             syslog(LOG_INFO, "Starting RFClient (vm_id=%s)", to_string<uint64_t>(this->id).c_str());
             ipc = (IPCMessageService*) new MongoIPCMessageService(address, MONGO_DB_NAME, to_string<uint64_t>(this->id));
@@ -99,7 +96,6 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
         }
 
     private:
-
         FlowTable* flowTable;
         IPCMessageService* ipc;
         uint64_t id;
@@ -308,13 +304,14 @@ class RFClient : private RFProtocolFactory, private IPCMessageProcessor {
 };
 
 int main(int argc, char* argv[]) {
-  setvbuf(stdout,NULL,_IOLBF,0);
+    //Disable buffering of standard out, without this when the output was sent to a file
+    //(i.e for logging) it didn't always write
+    setvbuf(stdout,NULL,_IOLBF,0); 
     char c;
     stringstream ss;
     string id;
     string address = MONGO_ADDRESS;
-
-    while ((c = getopt (argc, argv, "n:i:a:l")) != -1)
+    while ((c = getopt (argc, argv, "n:i:a:")) != -1)
         switch (c) {
             case 'n':
                 fprintf (stderr, "Custom naming not supported yet.");
@@ -340,7 +337,6 @@ int main(int argc, char* argv[]) {
             case '?':
                 if (optopt == 'n' || optopt == 'i' || optopt == 'a')
                     fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-
                 else if (isprint(optopt))
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                 else
