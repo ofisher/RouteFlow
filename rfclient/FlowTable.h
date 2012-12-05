@@ -11,6 +11,7 @@
 #include "types/IPAddress.h"
 #include "types/MACAddress.h"
 
+
 using namespace std;
 
 class Interface {

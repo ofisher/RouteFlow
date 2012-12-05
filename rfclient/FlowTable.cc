@@ -11,12 +11,14 @@
 #include "defs.h"
 
 #include "FlowTable.h"
+#ifdef FPM_ENABLED
 #include "FPMServer.h"
-
+#endif
 using namespace std;
 
 #define FULL_IPV4_MASK "255.255.255.255"
 #define EMPTY_MAC_ADDRESS "00:00:00:00:00:00"
+
 
 struct rtnl_handle FlowTable::rthNeigh;
 struct rtnl_handle FlowTable::rth;
@@ -55,18 +57,25 @@ void FlowTable::start(uint64_t vm_id, map<string, Interface> interfaces, IPCMess
 	FlowTable::vm_id = vm_id;
 	FlowTable::interfaces = interfaces;
 	FlowTable::ipc = ipc;
-    FlowTable::down_ports = down_ports;
+  FlowTable::down_ports = down_ports;
     
 	rtnl_open(&rth, RTMGRP_IPV4_MROUTE | RTMGRP_IPV4_ROUTE | RTMGRP_IPV6_MROUTE | RTMGRP_IPV6_ROUTE);
 	rtnl_open(&rthNeigh, RTMGRP_NEIGH);
 
 	HTPolling = boost::thread(&FlowTable::HTPollingCb);
-	//RTPolling = boost::thread(&FlowTable::RTPollingCb);
-	FPMClient = boost::thread(&FPMServer::start);
-
+#ifndef FPM_ENABLED
+	std::cout << "Netlink interface enabled\n";
+	  //Enable the netlink connection to the kernel if the FPM interface has not been enabled
+	  RTPolling = boost::thread(&FlowTable::RTPollingCb);
+	  RTPolling.detach();
+#endif
+#ifdef FPM_ENABLED
+	  std::cout << "FPM interface enabled\n";
+    FPMClient = boost::thread(&FPMServer::start);
+    FPMClient.detach();
+#endif
 	HTPolling.detach();
-	//RTPolling.detach();
-	FPMClient.detach();
+
 }
 
 int FlowTable::updateHostTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg) {
