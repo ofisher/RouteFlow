@@ -83,7 +83,6 @@ class HostEntry {
 // It is a little bit challenging to devise a decent API due to netlink
 class FlowTable {
     public:
-        static void RTPollingCb();
         static void HTPollingCb();
         static void fakeReq(const char *hostAddr, const char *intf);
         static void clear();
@@ -92,10 +91,14 @@ class FlowTable {
         static void print_test();
 
         static int updateHostTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg);
-        static int updateRouteTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg);
+        #ifndef FPM_ENABLED
+          static void RTPollingCb();
+          static int updateRouteTable(const struct sockaddr_nl *who, struct nlmsghdr *n, void *arg);
+        #endif /* FPM_ENABLED */
         static int updateRouteTable(struct nlmsghdr *n);
+
     private:
-        static struct rtnl_handle rth;
+
         static struct rtnl_handle rthNeigh;
         static int family;
         static unsigned groups;
@@ -107,10 +110,15 @@ class FlowTable {
         static vector<uint32_t>* down_ports;
         static IPCMessageService* ipc;
         static uint64_t vm_id;
-        
+        #ifdef FPM_ENABLED
+          static boost::thread FPMClient;
+        #else
+          static struct rtnl_handle rth;
+          static boost::thread RTPolling;
+        #endif /* FPM_ENABLED */
         static boost::thread HTPolling;
-        static boost::thread RTPolling;
-        static boost::thread FPMClient;
+
+        
 
         static list<RouteEntry> routeTable;
         static list<HostEntry> hostTable;

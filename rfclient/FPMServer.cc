@@ -189,7 +189,12 @@ void FPMServer::process_fpm_msg(fpm_msg_hdr_t *hdr) {
     warn_msg("Unknown fpm message type %u", hdr->msg_type);
     return;
   }
-  FlowTable::updateRouteTable((nlmsghdr *) fpm_msg_data(hdr));
+
+  struct nlmsghdr *n = (nlmsghdr *) fpm_msg_data(hdr);
+
+  if (n->nlmsg_type == RTM_NEWROUTE || n->nlmsg_type == RTM_DELROUTE){
+    FlowTable::updateRouteTable(n);
+  }
 }
 
 /*
